@@ -1,0 +1,49 @@
+* amine => list cmd 
+
+* lstcmd => tab 
+
+* parse comma (ex)> ls -a ; echo test | grep test 0
+    ls 
+    -a
+    ;
+    echo 
+    test 
+    | 
+    grep 
+    test
+    |
+    cat 
+    sdsc
+    ;
+ /////////////   
+    ls 
+    -a
+    0
+    echo 
+    test 
+    | 
+    grep 
+    test
+    |
+    cat 
+    aadsd
+    0
+
+* simple command
+    shellmain
+
+* Command with Pipe
+    Task 0
+
+* Command with redirection
+    * Command with redirection > <
+        Task 1
+    * Command with redirection &> <&
+        Task 2
+    * Command with redirection >> << (append)
+        Task 3
+
+day :
+    3h azure
+    3h C
+    3h Java
