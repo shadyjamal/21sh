@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 19:13:19 by cjamal            #+#    #+#             */
-/*   Updated: 2019/12/08 16:32:11 by cjamal           ###   ########.fr       */
+/*   Updated: 2019/12/12 17:43:53 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void	dispatcher(char **cmd, t_list **env)
 	else
 		ft_shellmain(cmd, *env);
 }
-int comma_count(char **cmd)
+
+int ft_ltroccur(char **cmd, char *ltr)
 {
 	int i;
 	int sepcount;
@@ -54,7 +55,7 @@ int comma_count(char **cmd)
 	sepcount = 0;
 	while (cmd[i])
 	{
-		if (!ft_strcmp(cmd[i], ";"))
+		if (!ft_strcmp(cmd[i], ltr))
 			sepcount += 1;
 		i++;
 	}
@@ -107,7 +108,7 @@ int		main(int ac, char *av[], char *environ[])
 			ft_strdel(&buffer);
 			cmd = list_to_tab(lstcmd, 0);
 			ft_lstdel(&lstcmd, &freecontent);
-			tabsep = cmd ? parsesep(cmd, comma_count(cmd)) : NULL;
+			tabsep = cmd ? parsesep(cmd, ft_ltroccur(cmd, ";")) : NULL;
 			i = -1;
 			while (tabsep[++i])
 			 	dispatcher(tabsep[i], &env);
