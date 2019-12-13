@@ -1,43 +1,69 @@
 #include "../includes/minishell.h"
 #include <stdio.h>
+#include <fcntl.h>
 
-int main(int ac, char **av, char **environ)
+void execpipe(char ***cmd)
 {
         int     fd[2];
         pid_t   childpid;
-        char **cmd;
-        char **cmd1;
+        int     fd_in = 0;
+        int     i;
 
-        cmd = (char**)malloc(sizeof(char*) * 2);
-        cmd1 = (char**)malloc(sizeof(char*) * 3);
-        cmd1[0] = "/usr/bin/grep";
-        cmd1[1] = "cd";
-        cmd1[2] = 0;
-        cmd[0] = "/bin/ls";
-        cmd[1] = 0;
-        pipe(fd);
-       
-        if ((childpid = fork()) == -1)
-                exit(1);
-        else if (childpid == 0) //ls
+        i = 0;
+        while (*cmd != NULL)
         {
-                /* Child process closes up input side of pipe "read descriptor" */
-                close(fd[1]); //
-                dup2(fd[0], 0);
-                /* Send "string" through the output side of pipe */
-                execve(cmd[0], cmd, NULL);
-                //write(fd[1], string, (strlen(string)+1));
-                exit(0);
+                pipe(fd);
+                if ((childpid = fork()) == -1)
+                        printf("fork error");
+                else if (childpid == 0)
+                {
+                        dup2(fd_in, 0);
+                        if (*(cmd + 1) != NULL) // if there is a next cmd
+                                dup2(fd[1], 1);
+                        close(fd[0]);
+                        close(fd[1]);
+                        if (execve((*cmd)[0], *cmd, NULL) == -1)
+                                exit(EXIT_FAILURE);
+                }
+                else 
+                {
+                        wait(NULL);
+                        close(fd[1]);
+                        if (fd_in)
+                                close(fd_in);
+                        fd_in = fd[0];
+                        cmd++;
+                }
         }
-        else // grep
-        {
-                /* Parent process closes output side of pipe "write descriptor*/
-                close(fd[1]);
-                dup2(fd[0], 0);
-                /* Read in a string from the pipe */
-                //nbytes = read(fd[0], readbuffer, sizeof(readbuffer));
-                execve(cmd1[0], cmd1, NULL);
-                //printf("Received string: %s", readbuffer);
-        }
-        return(0);
+}
+
+void    ft_redirect(char ***cmd, char *fdin, char *fdout)
+{
+        int in;
+        int out;
+
+        in = fdin ? open(fdin, O_RDONLY) : 0;
+        out = fdout ? open(fdout, O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR) : 1;
+        // replace standard input with input file
+        dup2(in, 0);
+        // replace standard output with output file
+        dup2(out, 1);
+        close(in);
+        close(out);
+        execpipe(cmd);
+}
+
+int main ()
+{
+        char fdin[] = "test";
+        char fdout[] = "";
+        //char *ls[] = {"/bin/ls", NULL};
+        char *grep[] = {"/usr/bin/grep", "chadi", NULL};
+        //char *wc[] = {"/usr/bin/wc","-c", NULL};
+        //char *cat[] = {"/bin/cat", NULL};
+        char **cmd[] = {grep, NULL};
+
+        ft_redirect(cmd, fdin, fdout);
+        //execpipe(cmd);
+        return (0);
 }
