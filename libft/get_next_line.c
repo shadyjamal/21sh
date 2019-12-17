@@ -3,49 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/24 12:34:53 by cjamal            #+#    #+#             */
-/*   Updated: 2019/11/29 17:11:01 by cjamal           ###   ########.fr       */
+/*   Created: 2019/05/19 22:07:27 by aait-ihi          #+#    #+#             */
+/*   Updated: 2019/09/14 21:37:31 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "includes/get_next_line.h"
 
-static	unsigned	int	ft_line_length(char *t)
+int	get_next_line(const int fd, char **line)
 {
-	return (ft_strrchr(t, '\n') ? ft_strchr(t, '\n') - t : ft_strlen(t));
-}
-
-static	char			*ft_line_rest(char *tab)
-{
-	if (ft_strchr(tab, '\n'))
-		return (ft_strcpy(tab, ft_strchr(tab, '\n') + 1));
-	if (ft_line_length(tab) > 0)
-		return (ft_strcpy(tab, ft_strchr(tab, '\0')));
-	return (NULL);
-}
-
-int						get_next_line(int const fd, char **line)
-{
-	char		*tmp;
-	char		*buff;
-	static char	*tab[4867];
 	int			r;
+	char		b[BUFF_SIZE + 1];
+	static char	*re[5002];
 
-	buff = ft_strnew(BUFF_SIZE);
-	if (fd < 0 || BUFF_SIZE < 1 || !line || read(fd, buff, 0) < 0)
+	if (!line || fd < 0 || fd > L || !(re[fd] = re[fd] ? re[fd] : ft_strnew(0)))
 		return (-1);
-	if (!(tab[fd]) && !(tab[fd] = ft_strnew(0)))
-		return (-1);
-	while (!(ft_strchr(tab[fd], '\n')) && (r = read(fd, buff, BUFF_SIZE)) > 0)
+	r = 1;
+	while (!(re[L] = ft_strchr(re[fd], '\n')) &&
+			(r = read(fd, b, BS)) > 0)
 	{
-		buff[r] = '\0';
-		tmp = tab[fd];
-		tab[fd] = ft_strjoin(tmp, buff);
-		free(tmp);
+		re[TMP] = re[fd];
+		b[r] = 0;
+		re[fd] = ft_strjoin(re[fd], b);
+		free(re[TMP]);
+		if (!re[fd])
+			return (-1);
 	}
-	*line = ft_strsub(tab[fd], 0, ft_line_length(tab[fd]));
-	free(buff);
-	return (ft_line_rest(tab[fd]) ? 1 : 0);
+	*line = ft_strsub(re[fd], 0, (re[L] ? re[L] - re[fd] : ft_strlen(re[fd])));
+	re[TMP] = re[fd];
+	re[fd] = r > 0 ? ft_strdup(re[L] + 1) : NULL;
+	free(re[TMP]);
+	if ((!re[fd] && re[L] && re[L][1]) || !*line)
+		return (-1);
+	return (**line || re[L] ? 1 + (r == 0) : r);
 }
