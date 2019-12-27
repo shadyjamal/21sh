@@ -13,10 +13,10 @@ void ft_closefd(int fdcount, int *fd)
 	}
 }
 
-void    ft_pipefd(int *fd, int pipecount)
+void ft_pipefd(int *fd, int pipecount)
 {
-	int     i;
-	
+	int i;
+
 	i = 0;
 	while (i < pipecount)
 	{
@@ -25,59 +25,55 @@ void    ft_pipefd(int *fd, int pipecount)
 	}
 }
 
-void    ft_execpipe(char ***cmd, int pipecount, t_list *env, t_env_var *var)
+void ft_execpipe(char ***cmd, int pipecount, t_list *env, t_env_var *var)
 {
-	int     fd[2 * pipecount];
-	pid_t   parrentpid;
-	pid_t   childpid;
-	int     i;
-    char    *cmdpath;
-    int     ret;
+	int fd[2 * pipecount];
+	pid_t parrentpid;
+	int i;
+	char *cmdpath;
+	int ret;
+	char **tabenv;
 
-	if ((parrentpid = fork()) == -1)
-		printf("fork error");
-	else if (parrentpid == 0)
+	tabenv = list_to_tab(env, 1);
+	ft_pipefd(fd, pipecount); /* Initialize pipes */
+	i = 0;
+	while (cmd[i] != NULL)
 	{
-		ft_pipefd(fd, pipecount); /* Initialize pipes */
-		i = 0;
-		while (cmd[i + 1] != NULL)
+		if (i != 0)
+			close(fd[2 * (i - 1) + 1]);
+		if ((parrentpid = fork()) == -1)
+			printf("fork error");
+		else if (parrentpid == 0)
 		{
-            cmdpath = NULL;
-			if ((childpid = fork()) == -1)
-				printf("fork error");
-			else if (childpid == 0)
-			{
+			cmdpath = NULL;
+			if (i != 0)
 				dup2(fd[2 * (i - 1)], 0);
-				dup2(fd[2 * i + 1], 1); 
-				ft_closefd(2 * pipecount, fd); /* Close all fd */
-				ret = dispatch(cmd[i], &env, var, &cmdpath);
-                if (cmdpath)
-				{
-                    if (execve(cmdpath, cmd[i], NULL) == -1)
-					    exit(EXIT_FAILURE);
-                }
-                else if (ret)
-                    exit(EXIT_FAILURE);
-                else 
-                    exit(EXIT_SUCCESS);
+			if (cmd[i + 1] != NULL)
+				dup2(fd[2 * i + 1], 1);
+			ft_closefd(2 * pipecount, fd); /* Close all fd */
+			ret = dispatch(cmd[i], &env, var, &cmdpath);
+			if (cmdpath)
+			{
+				if (execve(cmdpath, cmd[i], tabenv) == -1)
+					exit(EXIT_FAILURE);
 			}
-			i++;
+			else if (ret)
+			{
+				write(2, "error\n", 6);
+				exit(EXIT_FAILURE);
+			}
+			else
+				exit(EXIT_SUCCESS);
 		}
-		dup2(fd[2 * (i - 1)], 0);
-        ft_closefd(2 * pipecount, fd);
-        ret = dispatch(cmd[i], &env, var, &cmdpath);
-        if (cmdpath)
-		{
-            if (execve(cmdpath, cmd[i], NULL) == -1)
-			exit(EXIT_FAILURE);
-        }
-        else if (ret)
-            exit(EXIT_FAILURE);
-        else 
-            exit(EXIT_SUCCESS);
+		i++;
 	}
-	else
+	ft_closefd(2 * pipecount, fd);
+	int j = 0;
+	while (j < i)
+	{
 		wait(NULL);
+		j++;
+	}
 }
 
 // void ft_redirect_out(char *fdout, _Bool append)
@@ -95,7 +91,7 @@ void    ft_execpipe(char ***cmd, int pipecount, t_list *env, t_env_var *var)
 // 		else
 // 		{
 // 		     if ((out = open(fdout, O_WRONLY | O_APPEND | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR)) < 0)
-// 				return ; 
+// 				return ;
 // 		}
 // 		dup2(out, 1); // replace standard output with output file
 // 		close(out);

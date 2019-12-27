@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/23 00:14:36 by aait-ihi          #+#    #+#             */
-/*   Updated: 2019/12/17 17:58:38 by cjamal           ###   ########.fr       */
+/*   Updated: 2019/12/27 17:51:59 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*find(char *cmd, t_env_var *var)
 		free(path);
 	}
 	ft_free_2d_tab(paths);
-	PRINT_ERROR(cmd, permdeny ? PERM_DENYD : CMD_NOT_FOUND);
+	//PRINT_ERROR(cmd, permdeny ? PERM_DENYD : CMD_NOT_FOUND);
 	return (NULL);
 }
 
@@ -61,7 +61,7 @@ char		*ft_shellmain(char **cmd, t_env_var *var)
 	{
 		if ((ret = cmd_access(cmd[0])))
 		{
-			PRINT_ERROR(cmd[0], CMD_NOT_FOUND);
+			//PRINT_ERROR(cmd[0], CMD_NOT_FOUND);
 			return (NULL);
 		}
 		cmd_path = ft_strdup(cmd[0]);
