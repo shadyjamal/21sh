@@ -22,7 +22,6 @@ pipe.c
 pipe.o
 redirect.c
 redirect.o
-redirect1.c
 shellmain.c
 shellmain.o
 summary

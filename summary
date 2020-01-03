@@ -1,0 +1,15 @@
+// Redirecting / appending Output
+// [n]>
+// [n]>>
+
+// Redirecting Input
+// [n]<
+
+// Duplicating File Descriptors
+// [n]>&|| &>
+// [n]<&
+
+// &>>
+// [n]<<
+// [n]>&-
+// [n]<&-

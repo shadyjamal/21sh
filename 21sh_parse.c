@@ -16,18 +16,6 @@ int ft_ltrcount(char **cmd, char *ltr)
 	return (sepcount);
 }
 
-void printmatrix(char **cmd)
-{
-    int i = 0;
-
-    while (cmd[i])
-    {
-        ft_putendl(cmd[i]);
-        i++;
-    }
-    ft_putendl("EndofCmd");
-}
-
 char	***parsesep(char **cmd, int sep_count, char *sep)
 {
 	int i;

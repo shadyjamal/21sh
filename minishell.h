@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/29 14:32:29 by aait-ihi          #+#    #+#             */
-/*   Updated: 2019/12/17 17:56:30 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/01/03 11:58:35 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <sys/stat.h>
 # include <signal.h>
 # include <dirent.h>
+#include <fcntl.h>
 # include "libft/includes/libft.h"
 
 # define C_TAB (char *[])
@@ -43,6 +44,15 @@ pid_t			g_child_prc_pid;
 t_list			**g_pwd;
 int				*g_prompt_error;
 
+enum
+{
+	NO_REDIR,
+	REDIR_OUT,
+	REDIR_IN,
+	APPEND_OUT,
+	HEREDOC,
+};
+
 typedef struct	s_env_var
 {
 	t_list		*home;
@@ -51,6 +61,21 @@ typedef struct	s_env_var
 	t_list		*path;
 	int			error;
 }				t_env_var;
+
+typedef struct s_redirs
+{
+	int				typeredir;
+	char			*word;
+	struct s_redirs	*next;
+}				t_redirs;
+
+typedef struct	s_cmd_holder
+{
+	char		***tabsep;
+	t_redirs	**tab_redir;
+	t_list		*env;
+	char		***tabpipe;
+}				t_cmd_holder;
 
 t_list			*ft_parsecmd(char *buffer, t_list **env, t_env_var *var);
 
@@ -78,10 +103,17 @@ char			**list_to_tab(t_list *env, int flag);
 // 21sh
 char			***parsesep(char **cmd, int sep_count, char *sep);
 int				ft_ltrcount(char **cmd, char *ltr);
-void			ft_execpipe(char ***cmd, int pipecount, t_list *env, t_env_var *var);
+void 			ft_execpipe(t_cmd_holder *hold, int pipecount,t_env_var *var);
 int				dispatch(char **cmd, t_list **env, t_env_var *var, char **cmdpath);
+
+// redirections
+t_redirs		**ft_alloc_tabredirs(t_list **lstcmd);
+void			ft_exec_redirections(t_redirs *tabredir);
+void 			ft_execsimple_cmd(t_cmd_holder *hold,t_env_var *var);
 
 // debug
 void printmatrix(char **cmd);
+void printlst(t_list *lst);
+void printlstredirs(t_redirs **tabredir);
 
 #endif
