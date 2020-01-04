@@ -65,7 +65,7 @@ void ft_execsimple_cmd(t_cmd_holder *hold,t_env_var *var)
 	{
 		save_stdin_stdout(backup);
 		tabenv = list_to_tab(hold->env, 1);
-		ft_exec_redirections(*(hold->tab_redir));
+		ft_exec_redirections(*(hold->tab_redir), backup);
 		ret = dispatch(hold->tabpipe[0], &hold->env, var, &cmdpath);
 		if (cmdpath)
 		{
@@ -79,7 +79,7 @@ void ft_execsimple_cmd(t_cmd_holder *hold,t_env_var *var)
 		}
 		else if (ret)
 		{
-			write(2, "error\n", 6);
+			write(2, "error\n", 6); // ERRRROR
 		}
 		restore_stdin_stdout(backup);
 	}
@@ -97,6 +97,7 @@ void ft_execpipe(t_cmd_holder *hold, int pipecount,t_env_var *var)
 	tabenv = list_to_tab(hold->env, 1);
 	ft_pipefd(fd, pipecount); /* Initialize pipes */
 	i = 0;
+	save_stdin_stdout(backup);
 	while (hold->tabpipe[i] != NULL)
 	{
 		if (fork_process() == 0)
@@ -107,9 +108,9 @@ void ft_execpipe(t_cmd_holder *hold, int pipecount,t_env_var *var)
 			if (hold->tabpipe[i + 1] != NULL)
 				dup2(fd[2 * i + 1], 1);
 			ft_closefd(2 * pipecount, fd); /* Close all fd */
-			save_stdin_stdout(backup);
+			//
 			// Redirection
-			ft_exec_redirections(hold->tab_redir[i]);
+			ft_exec_redirections(hold->tab_redir[i], backup);
 			// Exec
 			ret = dispatch(hold->tabpipe[i], &hold->env, var, &cmdpath);
 			if (cmdpath)
@@ -124,7 +125,7 @@ void ft_execpipe(t_cmd_holder *hold, int pipecount,t_env_var *var)
 			}
 			else
 				exit(EXIT_SUCCESS);
-			restore_stdin_stdout(backup);
+			//restore_stdin_stdout(backup);
 		}
 		i++;
 	}

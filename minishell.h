@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/29 14:32:29 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/01/03 11:58:35 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/01/04 18:50:10 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_redirs
 {
 	int				typeredir;
 	char			*word;
+	int				n;
 	struct s_redirs	*next;
 }				t_redirs;
 
@@ -99,6 +100,7 @@ void			ft_lstmodifone(t_list *to_mod, char *value);
 void			ft_display_prompt(char *prt, int error);
 t_list			*tab_to_list(char **env);
 char			**list_to_tab(t_list *env, int flag);
+pid_t			fork_process(void);
 
 // 21sh
 char			***parsesep(char **cmd, int sep_count, char *sep);
@@ -108,7 +110,7 @@ int				dispatch(char **cmd, t_list **env, t_env_var *var, char **cmdpath);
 
 // redirections
 t_redirs		**ft_alloc_tabredirs(t_list **lstcmd);
-void			ft_exec_redirections(t_redirs *tabredir);
+void			ft_exec_redirections(t_redirs *tabredir, int *fd);
 void 			ft_execsimple_cmd(t_cmd_holder *hold,t_env_var *var);
 
 // debug

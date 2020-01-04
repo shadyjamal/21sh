@@ -13,18 +13,24 @@ t_redirs *ft_create_redirection(t_list *redir)
         if (ft_strequ(redir->content, ">"))
         {
             new_redir->typeredir = REDIR_OUT;
-            ft_memcpy(new_redir->word, word->content, word->content_size);
+            new_redir->n = 1;
         }
         else if (ft_strequ(redir->content, "<"))
         {
             new_redir->typeredir = REDIR_IN;
-            ft_memcpy(new_redir->word, word->content, word->content_size);
+            new_redir->n = 0;
         }
         else if (ft_strequ(redir->content, ">>"))
-        {
+        {    
             new_redir->typeredir = APPEND_OUT;
-            ft_memcpy(new_redir->word, word->content, word->content_size);
+            new_redir->n = 1;
         }
+        else if (ft_strequ(redir->content, "<<"))
+        {
+            new_redir->typeredir = HEREDOC;
+            new_redir->n = 0;
+        }
+        ft_memcpy(new_redir->word, word->content, word->content_size);
     }
     else
     {
@@ -113,53 +119,3 @@ t_redirs **ft_alloc_tabredirs(t_list **lstcmd)
     ft_parse_redirection(lstcmd, tab_redir);
     return (tab_redir);
 }
-
-void ft_redirect_out(char *fdout, _Bool append)
-{
-	int out;
-
-	out = 1;
-	if (fdout)
-	{
-		if (!append)
-		{
-			if ((out = open(fdout, O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR)) < 0)
-				return ; // error
-		}
-		else
-		{
-		     if ((out = open(fdout, O_WRONLY | O_APPEND | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR)) < 0)
-				return ;
-		}
-		dup2(out, 1); // replace standard output with output file
-		close(out);
-	}
-}
-
-void ft_redirect_in(char *fdin)
-{
-	int in;
-
-	in = 0;
-	if (fdin)
-	{
-		if ((in = open(fdin, O_RDONLY)) < 0)
-			return ;
-		dup2(in, 0); // replace standard input with input file
-		close(in);
-	}
-}
-void    ft_exec_redirections(t_redirs *tabredir)
-{
-    while (tabredir)
-    {
-        if (tabredir->typeredir == REDIR_OUT)
-            ft_redirect_out(tabredir->word, 0);
-        else if (tabredir->typeredir == APPEND_OUT)
-            ft_redirect_out(tabredir->word, 1);
-        else if (tabredir->typeredir == REDIR_IN)
-            ft_redirect_in(tabredir->word);
-        tabredir = tabredir->next;
-    }
-}
-

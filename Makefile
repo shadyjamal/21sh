@@ -6,7 +6,7 @@
 #    By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/29 15:53:22 by aait-ihi          #+#    #+#              #
-#    Updated: 2019/12/31 13:26:53 by cjamal           ###   ########.fr        #
+#    Updated: 2020/01/04 16:47:38 by cjamal           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = minishell
 LIB_FT = libft/libft.a
 
 FLAGS = -Wall -Werror -Wextra -g
-SRC = cd.c echo.c env.c main.c parsing.c shellmain.c utilslst.c 21sh_parse.c pipe.c redirect.c debug.c
+SRC = cd.c echo.c env.c main.c parsing.c shellmain.c utilslst.c 21sh_parse.c pipe.c redirect1.c redirect.c debug.c
 
 CC = gcc
 

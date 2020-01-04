@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/23 00:14:15 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/01/03 19:12:39 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/01/04 17:29:54 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int main(int ac, char *av[], char *environ[])
 			lstcmd = ft_parsecmd(buffer, &hold->env, &var);\
 			// Parse redirst_redirs
 			hold->tab_redir = ft_alloc_tabredirs(&lstcmd);
-			printlstredirs(hold->tab_redir);
+			//printlstredirs(hold->tab_redir);
 			cmd = list_to_tab(lstcmd, 0);
 			ft_strdel(&buffer);
 			ft_lstdel(&lstcmd);

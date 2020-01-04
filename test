@@ -23,10 +23,12 @@ pipe.o
 redirect.c
 redirect.o
 redirect1.c
+redirect1.o
 shellmain.c
 shellmain.o
 summary
 test
 test0
+test1
 utilslst.c
 utilslst.o
