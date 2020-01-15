@@ -1,34 +1,166 @@
-21sh_parse.c
-21sh_parse.o
-Makefile
-auteur
-cd.c
-cd.o
-debug.c
-debug.o
-echo.c
-echo.o
-env.c
-env.o
-libft
-main.c
-main.o
-minishell
-minishell.h
-out
-parsing.c
-parsing.o
-pipe.c
-pipe.o
-redirect.c
-redirect.o
-redirect1.c
-redirect1.o
-shellmain.c
-shellmain.o
-summary
-test
-test0
-test1
-utilslst.c
-utilslst.o
+==5962== Memcheck, a memory error detector
+==5962== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==5962== Using Valgrind-3.15.0-608cb11914-20190413 and LibVEX; rerun with -h for copyright info
+==5962== Command: ./minishell
+==5962== 
+--5962-- Valgrind options:
+--5962--    -v
+--5962-- Output from sysctl({CTL_KERN,KERN_VERSION}):
+--5962--   Darwin Kernel Version 16.7.0: Thu Jun 21 20:07:39 PDT 2018; root:xnu-3789.73.14~1/RELEASE_X86_64
+--5962-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand
+--5962-- Page sizes: currently 4096, max supported 4096
+--5962-- Valgrind library directory: /Users/cjamal/.brew/Cellar/valgrind/3.15.0/lib/valgrind
+--5962-- ./minishell (rx at 0x100000000, rw at 0x10000d000)
+--5962--    reading syms   from primary file (159 349)
+--5962--    dSYM= ./minishell.dSYM/Contents/Resources/DWARF/minishell
+--5962--    reading dwarf3 from dsyms file
+--5962-- /usr/lib/dyld (rx at 0x10001c000, rw at 0x10005a000)
+--5962--    reading syms   from primary file (6 1223)
+--5962-- Scheduler: using generic scheduler lock implementation.
+--5962-- Reading suppressions file: /Users/cjamal/.brew/Cellar/valgrind/3.15.0/lib/valgrind/default.supp
+==5962== embedded gdbserver: reading from /var/folders/zz/zyxvpxvq6csfxvn_n00006jc0001mb/T//vgdb-pipe-from-vgdb-to-5962-by-cjamal-on-???
+==5962== embedded gdbserver: writing to   /var/folders/zz/zyxvpxvq6csfxvn_n00006jc0001mb/T//vgdb-pipe-to-vgdb-from-5962-by-cjamal-on-???
+==5962== embedded gdbserver: shared mem   /var/folders/zz/zyxvpxvq6csfxvn_n00006jc0001mb/T//vgdb-pipe-shared-mem-vgdb-5962-by-cjamal-on-???
+==5962== 
+==5962== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==5962== don't want to do, unless you know exactly what you're doing,
+==5962== or are doing some strange experiment):
+==5962==   /Users/cjamal/.brew/Cellar/valgrind/3.15.0/lib/valgrind/../../bin/vgdb --pid=5962 ...command...
+==5962== 
+==5962== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==5962==   /path/to/gdb ./minishell
+==5962== and then give GDB the following command
+==5962==   target remote | /Users/cjamal/.brew/Cellar/valgrind/3.15.0/lib/valgrind/../../bin/vgdb --pid=5962
+==5962== --pid is optional if only one valgrind process is running
+==5962== 
+--5962-- REDIR: 0x100042620 (dyld:strcmp) redirected to 0x25805895d (???)
+--5962-- REDIR: 0x10003c130 (dyld:arc4random) redirected to 0x2580589fb (???)
+--5962-- REDIR: 0x10003bfe0 (dyld:strlen) redirected to 0x25805892c (???)
+--5962-- REDIR: 0x10003bf40 (dyld:strcpy) redirected to 0x258058979 (???)
+--5962-- REDIR: 0x10003f7dd (dyld:strcat) redirected to 0x25805893d (???)
+--5962-- REDIR: 0x10003f81b (dyld:strlcat) redirected to 0x258058996 (???)
+--5962-- /Users/cjamal/.brew/Cellar/valgrind/3.15.0/lib/valgrind/vgpreload_core-amd64-darwin.so (rx at 0x1000a7000, rw at 0x1000ac000)
+--5962--    reading syms   from primary file (3 88)
+--5962--    dSYM= /Users/cjamal/.brew/Cellar/valgrind/3.15.0/lib/valgrind/vgpreload_core-amd64-darwin.so.dSYM/Contents/Resources/DWARF/vgpreload_core-amd64-darwin.so
+--5962-- /Users/cjamal/.brew/Cellar/valgrind/3.15.0/lib/valgrind/vgpreload_memcheck-amd64-darwin.so (rx at 0x1000b0000, rw at 0x1000b8000)
+--5962--    reading syms   from primary file (72 96)
+--5962--    dSYM= /Users/cjamal/.brew/Cellar/valgrind/3.15.0/lib/valgrind/vgpreload_memcheck-amd64-darwin.so.dSYM/Contents/Resources/DWARF/vgpreload_memcheck-amd64-darwin.so
+--5962-- /usr/lib/libSystem.B.dylib (rx at 0x1000be000, rw at 0x1000c0000)
+--5962--    reading syms   from primary file (31 5)
+--5962-- /usr/lib/system/libcache.dylib (rx at 0x1000c5000, rw at 0x1000ca000)
+--5962--    reading syms   from primary file (32 29)
+--5962-- /usr/lib/system/libcommonCrypto.dylib (rx at 0x1000cf000, rw at 0x1000da000)
+--5962--    reading syms   from primary file (214 167)
+--5962-- /usr/lib/system/libcompiler_rt.dylib (rx at 0x1000e7000, rw at 0x1000ef000)
+--5962--    reading syms   from primary file (510 8)
+--5962-- /usr/lib/system/libcopyfile.dylib (rx at 0x1000fc000, rw at 0x100105000)
+--5962--    reading syms   from primary file (13 35)
+--5962-- /usr/lib/system/libcorecrypto.dylib (rx at 0x10010b000, rw at 0x10018f000)
+--5962--    reading syms   from primary file (479 678)
+--5962-- /usr/lib/system/libdispatch.dylib (rx at 0x1001aa000, rw at 0x1001dc000)
+--5962--    reading syms   from primary file (258 910)
+--5962-- /usr/lib/system/libdyld.dylib (rx at 0x100215000, rw at 0x10021b000)
+--5962--    reading syms   from primary file (98 130)
+--5962-- /usr/lib/system/libkeymgr.dylib (rx at 0x100223000, rw at 0x100224000)
+--5962--    reading syms   from primary file (12 3)
+--5962-- /usr/lib/system/liblaunch.dylib (rx at 0x100228000, rw at 0x100229000)
+--5962--    reading syms   from primary file (113 3)
+--5962-- /usr/lib/system/libmacho.dylib (rx at 0x100230000, rw at 0x100236000)
+--5962--    reading syms   from primary file (102 1)
+--5962-- /usr/lib/system/libquarantine.dylib (rx at 0x10023c000, rw at 0x10023f000)
+--5962--    reading syms   from primary file (67 32)
+--5962-- /usr/lib/system/libremovefile.dylib (rx at 0x100245000, rw at 0x100247000)
+--5962--    reading syms   from primary file (15 4)
+--5962-- /usr/lib/system/libsystem_asl.dylib (rx at 0x10024c000, rw at 0x100265000)
+--5962--    reading syms   from primary file (222 224)
+--5962-- /usr/lib/system/libsystem_blocks.dylib (rx at 0x100272000, rw at 0x100273000)
+--5962--    reading syms   from primary file (21 6)
+--5962-- /usr/lib/system/libsystem_c.dylib (rx at 0x100277000, rw at 0x100305000)
+--5962--    reading syms   from primary file (1331 777)
+--5962-- /usr/lib/system/libsystem_configuration.dylib (rx at 0x10032c000, rw at 0x100330000)
+--5962--    reading syms   from primary file (38 75)
+--5962-- /usr/lib/system/libsystem_coreservices.dylib (rx at 0x100337000, rw at 0x10033b000)
+--5962--    reading syms   from primary file (14 36)
+--5962-- /usr/lib/system/libsystem_coretls.dylib (rx at 0x100340000, rw at 0x100359000)
+--5962--    reading syms   from primary file (130 250)
+--5962-- /usr/lib/system/libsystem_dnssd.dylib (rx at 0x100364000, rw at 0x10036b000)
+--5962--    reading syms   from primary file (49 24)
+--5962-- /usr/lib/system/libsystem_info.dylib (rx at 0x100370000, rw at 0x10039a000)
+--5962--    reading syms   from primary file (523 519)
+--5962-- /usr/lib/system/libsystem_kernel.dylib (rx at 0x1003af000, rw at 0x1003d2000)
+--5962--    reading syms   from primary file (1179 98)
+--5962-- /usr/lib/system/libsystem_m.dylib (rx at 0x1003e9000, rw at 0x100431000)
+--5962--    reading syms   from primary file (605 1)
+--5962-- /usr/lib/system/libsystem_malloc.dylib (rx at 0x10043d000, rw at 0x10045c000)
+--5962--    reading syms   from primary file (117 253)
+--5962-- /usr/lib/system/libsystem_network.dylib (rx at 0x100468000, rw at 0x1004c2000)
+--5962--    reading syms   from primary file (730 584)
+--5962-- /usr/lib/system/libsystem_networkextension.dylib (rx at 0x1004e4000, rw at 0x1004ee000)
+--5962--    reading syms   from primary file (89 229)
+--5962-- /usr/lib/system/libsystem_notify.dylib (rx at 0x1004f9000, rw at 0x100503000)
+--5962--    reading syms   from primary file (113 54)
+--5962-- /usr/lib/system/libsystem_platform.dylib (rx at 0x10050a000, rw at 0x100513000)
+--5962--    reading syms   from primary file (158 105)
+--5962-- /usr/lib/system/libsystem_pthread.dylib (rx at 0x10051b000, rw at 0x100526000)
+--5962--    reading syms   from primary file (174 79)
+--5962-- /usr/lib/system/libsystem_sandbox.dylib (rx at 0x100532000, rw at 0x100536000)
+--5962--    reading syms   from primary file (85 9)
+--5962-- /usr/lib/system/libsystem_secinit.dylib (rx at 0x10053c000, rw at 0x10053e000)
+--5962--    reading syms   from primary file (1 7)
+--5962-- /usr/lib/system/libsystem_symptoms.dylib (rx at 0x100543000, rw at 0x10054b000)
+--5962--    reading syms   from primary file (8 66)
+--5962-- /usr/lib/system/libsystem_trace.dylib (rx at 0x100551000, rw at 0x100565000)
+--5962--    reading syms   from primary file (101 236)
+--5962-- /usr/lib/system/libunwind.dylib (rx at 0x100573000, rw at 0x100579000)
+--5962--    reading syms   from primary file (102 52)
+--5962-- /usr/lib/system/libxpc.dylib (rx at 0x100580000, rw at 0x1005aa000)
+--5962--    reading syms   from primary file (515 825)
+--5962-- /usr/lib/libobjc.A.dylib (rx at 0x1005c9000, rw at 0x10099c000)
+--5962--    reading syms   from primary file (368 886)
+--5962-- /usr/lib/libc++abi.dylib (rx at 0x100a79000, rw at 0x100aa3000)
+--5962--    reading syms   from primary file (339 188)
+--5962-- /usr/lib/libc++.1.dylib (rx at 0x100ab2000, rw at 0x100b09000)
+--5962--    reading syms   from primary file (1979 1610)
+--5962-- REDIR: 0x10050b680 (libsystem_platform.dylib:_platform_memchr$VARIANT$Haswell) redirected to 0x1000b2d54 (_platform_memchr$VARIANT$Haswell)
+--5962-- REDIR: 0x10050b760 (libsystem_platform.dylib:_platform_memcmp) redirected to 0x1000b3449 (_platform_memcmp)
+--5962-- REDIR: 0x10050bcc0 (libsystem_platform.dylib:_platform_strncmp) redirected to 0x1000b2c55 (_platform_strncmp)
+--5962-- REDIR: 0x100278b40 (libsystem_c.dylib:strlen) redirected to 0x1000b28e6 (strlen)
+--5962-- REDIR: 0x10050c280 (libsystem_platform.dylib:_platform_strcmp) redirected to 0x1000b2cd1 (_platform_strcmp)
+--5962-- REDIR: 0x100441d61 (libsystem_malloc.dylib:calloc) redirected to 0x1000b17cf (calloc)
+--5962-- REDIR: 0x1004413dc (libsystem_malloc.dylib:malloc_default_zone) redirected to 0x1000b2511 (malloc_default_zone)
+--5962-- REDIR: 0x10043f217 (libsystem_malloc.dylib:malloc_zone_malloc) redirected to 0x1000b141b (malloc_zone_malloc)
+--5962-- REDIR: 0x1004413e7 (libsystem_malloc.dylib:malloc_zone_calloc) redirected to 0x1000b19bd (malloc_zone_calloc)
+--5962-- REDIR: 0x10043e1e8 (libsystem_malloc.dylib:malloc) redirected to 0x1000b11b0 (malloc)
+--5962-- REDIR: 0x1004414af (libsystem_malloc.dylib:malloc_zone_from_ptr) redirected to 0x1000b2552 (malloc_zone_from_ptr)
+--5962-- REDIR: 0x100440dd5 (libsystem_malloc.dylib:free) redirected to 0x1000b1591 (free)
+--5962-- REDIR: 0x10050bea0 (libsystem_platform.dylib:_platform_strchr$VARIANT$Haswell) redirected to 0x1000b27b6 (_platform_strchr$VARIANT$Haswell)
+--5962-- REDIR: 0x100441f10 (libsystem_malloc.dylib:realloc) redirected to 0x1000b1b51 (realloc)
+minishell: lssvasvasv: command not found
+==5962== 
+==5962== HEAP SUMMARY:
+==5962==     in use at exit: 19,876 bytes in 226 blocks
+==5962==   total heap usage: 495 allocs, 269 frees, 32,658 bytes allocated
+==5962== 
+==5962== Searching for pointers to 226 not-freed blocks
+==5962== Checked 9,958,104 bytes
+==5962== 
+==5962== LEAK SUMMARY:
+==5962==    definitely lost: 0 bytes in 0 blocks
+==5962==    indirectly lost: 0 bytes in 0 blocks
+==5962==      possibly lost: 72 bytes in 3 blocks
+==5962==    still reachable: 1,938 bytes in 71 blocks
+==5962==         suppressed: 17,866 bytes in 152 blocks
+==5962== Rerun with --leak-check=full to see details of leaked memory
+==5962== 
+==5962== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
+--5962-- 
+--5962-- used_suppression:      4 OSX1012:19-Leak /Users/cjamal/.brew/Cellar/valgrind/3.15.0/lib/valgrind/default.supp:924 suppressed: 8,768 bytes in 4 blocks
+--5962-- used_suppression:      8 OSX1012:17-Leak /Users/cjamal/.brew/Cellar/valgrind/3.15.0/lib/valgrind/default.supp:906 suppressed: 3,872 bytes in 61 blocks
+--5962-- used_suppression:      3 OSX1012:16-Leak /Users/cjamal/.brew/Cellar/valgrind/3.15.0/lib/valgrind/default.supp:897 suppressed: 3,072 bytes in 48 blocks
+--5962-- used_suppression:     15 OSX1012:10-Leak /Users/cjamal/.brew/Cellar/valgrind/3.15.0/lib/valgrind/default.supp:839 suppressed: 2,034 bytes in 35 blocks
+--5962-- used_suppression:      4 OSX1012:18-Leak /Users/cjamal/.brew/Cellar/valgrind/3.15.0/lib/valgrind/default.supp:915 suppressed: 120 bytes in 4 blocks
+--5962-- used_suppression:      1 OSX1012:dyld-5 /Users/cjamal/.brew/Cellar/valgrind/3.15.0/lib/valgrind/default.supp:1283
+--5962-- used_suppression:      2 OSX1012:dyld-4 /Users/cjamal/.brew/Cellar/valgrind/3.15.0/lib/valgrind/default.supp:1275
+--5962-- used_suppression:      1 OSX1012:dyld-3 /Users/cjamal/.brew/Cellar/valgrind/3.15.0/lib/valgrind/default.supp:1267
+==5962== 
+==5962== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)

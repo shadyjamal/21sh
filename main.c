@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cjamal <chadijamal@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/23 00:14:15 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/01/04 17:29:54 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/01/14 17:31:30 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int ft_tabsize(char **tab)
+{
+	int size;
+
+	size = 0;
+	while (tab[size])
+		size++;
+	return (size);
+}
 
 void kill_procces(int signal)
 {
@@ -59,63 +69,13 @@ void init(char *environ[], t_list **env, t_env_var *var)
 	env_var_protection(var, env);
 }
 
-int dispatch(char **cmd, t_list **env, t_env_var *var, char **cmdpath)
-{
-	if (!cmd[0])
-		return (-1);
-	else if (ft_strequ(cmd[0], "exit"))
-	{
-		ft_free_2d_tab(cmd);
-		ft_lstdel(env);
-		exit(0);
-	}
-	if (ft_strequ(cmd[0], "cd"))
-		return (ft_cd(cmd, var, NULL));
-	if (ft_strequ(cmd[0], "echo"))
-		return (ft_echo(cmd));
-	if (ft_strequ(cmd[0], "env"))
-		return (ft_env(env, cmd, var));
-	if (ft_strequ(cmd[0], "setenv"))
-		return (ft_setenv(cmd, env, var));
-	if (ft_strequ(cmd[0], "unsetenv"))
-		return (ft_unsetenv(cmd, env));
-	if ((*cmdpath = ft_shellmain(cmd, var)) != NULL)
-		return (0);
-	return (1);
-}
-
-void ft_mainexec(t_cmd_holder *holder, t_env_var *var)
-{
-	int i;
-	int pipecount;
-	
-	i = 0;
-	while (holder->tabsep[i])
-	{
-		pipecount = ft_ltrcount(holder->tabsep[i], "|");
-		holder->tabpipe = parsesep(holder->tabsep[i], pipecount, "|");
-		if (holder->tabpipe[0] && !holder->tabpipe[1])
-		{
-			ft_execsimple_cmd(holder, var);
-			holder->tab_redir++;
-		}
-		else 
-		{
-			ft_execpipe(holder, pipecount, var);
-			holder->tab_redir += pipecount + 1;
-		}
-		i++;
-	}
-}
-
 int main(int ac, char *av[], char *environ[])
 {
 	char *buffer;
-	char **cmd;
 	t_list *lstcmd;
 	t_env_var var;
 	t_cmd_holder *hold;
-	
+
 	(void)av[ac * 0];
 	buffer = NULL;
 	hold = (t_cmd_holder *)malloc(sizeof(t_cmd_holder));
@@ -125,17 +85,14 @@ int main(int ac, char *av[], char *environ[])
 		ft_display_prompt(var.pwd->content, var.error);
 		if (get_next_line(0, &buffer) > 0)
 		{
-			lstcmd = ft_parsecmd(buffer, &hold->env, &var);\
-			// Parse redirst_redirs
-			hold->tab_redir = ft_alloc_tabredirs(&lstcmd);
-			//printlstredirs(hold->tab_redir);
-			cmd = list_to_tab(lstcmd, 0);
+			lstcmd = ft_parsecmd(buffer, &hold->env, &var);
+			hold->tab_redir = ft_alloc_tabredirs(&lstcmd); /* store redirections */
+			hold->cmd = list_to_tab(lstcmd, 0); /* */
+			hold->size_cmd = ft_tabsize(hold->cmd);
 			ft_strdel(&buffer);
 			ft_lstdel(&lstcmd);
-			hold->tabsep = parsesep(cmd, ft_ltrcount(cmd, ";"), ";");
-			//parse && ||
-			ft_mainexec(hold, &var);
-			ft_free_2d_tab(cmd);
+			var.error = ft_mainexec(hold, &var);
+			ft_free(hold);
 		}
 		ft_strdel(&buffer);
 		g_child_prc_pid = 0;

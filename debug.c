@@ -17,7 +17,7 @@ void printlst(t_list *lst)
     while (lst)
     {
         ft_putendl(lst->content);
-        lst = lst->next; 
+        lst = lst->next;
     }
     ft_putendl("Endoflst");
 }
@@ -35,10 +35,13 @@ void printlstredirs(t_redirs **tabredir)
         ft_putchar('\n');
         while (beginredir)
         {
-            ft_putstr("file redirected = ");
+            ft_putstr("file redirected to= ");
             ft_putendl(beginredir->word);
             ft_putstr("type of redirection = ");
             ft_putnbr(beginredir->typeredir);
+            ft_putchar('\n');
+            ft_putstr("FD redirected = ");
+            ft_putnbr(beginredir->n);
             ft_putchar('\n');
             beginredir = beginredir->next;
         }

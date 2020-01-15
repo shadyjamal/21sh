@@ -1,15 +1,35 @@
-// Redirecting / appending Output
-// [n]>
-// [n]>>
-
-// Redirecting Input
-// [n]<
-
 // Duplicating File Descriptors
-// [n]>&|| &>
+// [n]>&
 // [n]<&
 
-// &>>
+// [n]>&- *
+// [n]<&- *
+
+
+**** DONE ******
+
+// Redirecting / appending Output
+// [n]> *
+// [n]>> *
+// Redirecting Input
+// [n]< *
+// Here doc
+// [n]<< *
+
+
+
+// [n]>
+// [n]>>
+// [n]>&  // [n]>& -
+
+
+// [n]<
 // [n]<<
-// [n]>&-
-// [n]<&-
+// [n]<&
+
+to deal with :
+
+>>
+<<20>>
+
+errors permissions of files = redirections

@@ -1,72 +1,79 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   shellmain.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/23 00:14:36 by aait-ihi          #+#    #+#             */
-/*   Updated: 2019/12/27 17:51:59 by cjamal           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
-int		cmd_access(char *cmd)
+int ft_exec_cmd(t_cmd_holder *hold, char **cmd, t_env_var *var, int pipecount)
 {
-	if (cmd && !ft_is_dir(cmd) && !access(cmd, F_OK))
-	{
-		if (!access(cmd, X_OK))
-			return (0);
-		else
-			return (2);
-	}
-	return (1);
+	int ret;
+
+	hold->tabpipe = parsesep(cmd, pipecount, "|", 0);
+	if (!pipecount)
+		ft_execsimple_cmd(hold, var, &ret);
+	else
+		ft_execpipe(hold, pipecount, var, &ret);
+	free(hold->tabpipe);
+	return (ret);
 }
 
-char	*find(char *cmd, t_env_var *var)
+int ft_exec_or_and(t_cmd_holder *hold, t_env_var *var, int count)
 {
-	char	*path;
-	int		ret;
-	int		permdeny;
-	char	**paths;
-	int		i;
+	int i;
+	int ret;
+	int pipecount;
+	t_list *and_or;
 
-	permdeny = 0;
+	and_or = hold->logic;
+	ret = 0;
 	i = 0;
-	paths = ft_strsplit(var->path->content ? var->path->content + 5 : "", ":");
-	while (paths && paths[i])
+	while (i < count + 1)
 	{
-		path = ft_strnjoin((char *[]){paths[i], "/", cmd}, 3);
-		if (!(ret = cmd_access(path)))
+		pipecount = ft_ltrcount(hold->taband_or[i], "|");
+		if (!i || (!ret && ft_strequ(and_or->content, "&&")) ||
+			(ret && ft_strequ(and_or->content, "||")))
+			ret = ft_exec_cmd(hold, hold->taband_or[i], var, pipecount);
+		i ? and_or = and_or->next : 0;
+		hold->tab_redir += pipecount + 1;
+		i++;
+	}
+	ft_lstdel(&hold->logic);
+	free(hold->taband_or);
+	return (ret);
+}
+
+int ft_handle_or_and(t_cmd_holder *hold, t_env_var *var, int index)
+{
+	int logic_count;
+
+	logic_count = ft_logiccount(hold->tabsep[index]);
+	hold->taband_or = parse_or_and(hold->tabsep[index], logic_count, &hold->logic);
+	if (hold->taband_or)
+		return (ft_exec_or_and(hold, var, logic_count));
+	else
+		return (NO_LOGIC_SEP);
+}
+
+int ft_mainexec(t_cmd_holder *hold, t_env_var *var)
+{
+	int i;
+	int ret;
+	int pipecount;
+	int sepcount;
+	t_redirs **tmp;
+
+	i = 0;
+	ret = 1;
+	tmp = hold->tab_redir;
+	sepcount = ft_ltrcount(hold->cmd, ";");
+	hold->tabsep = parsesep(hold->cmd, sepcount, ";", &hold->size_sep);
+	while (i < hold->size_sep)
+	{
+		ret = ft_handle_or_and(hold, var, i);
+		if (ret == NO_LOGIC_SEP)
 		{
-			ft_free_2d_tab(paths);
-			return (path);
+			pipecount = ft_ltrcount(hold->tabsep[i], "|");
+			ret = ft_exec_cmd(hold, hold->tabsep[i], var, pipecount);
+			hold->tab_redir += pipecount + 1;
 		}
 		i++;
-		ret == 2 ? permdeny = ret : 0;
-		free(path);
 	}
-	ft_free_2d_tab(paths);
-	//PRINT_ERROR(cmd, permdeny ? PERM_DENYD : CMD_NOT_FOUND);
-	return (NULL);
-}
-
-char		*ft_shellmain(char **cmd, t_env_var *var)
-{
-	char	*cmd_path;
-	int		ret;
-
-	if (ft_strchr(cmd[0], '/'))
-	{
-		if ((ret = cmd_access(cmd[0])))
-		{
-			//PRINT_ERROR(cmd[0], CMD_NOT_FOUND);
-			return (NULL);
-		}
-		cmd_path = ft_strdup(cmd[0]);
-	}
-	else
-		cmd_path = find(cmd[0], var);
-	return (cmd_path);
+	hold->tab_redir = tmp;
+	return (ret);
 }
