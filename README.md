@@ -6,9 +6,9 @@ Through the Minishell project, you will get to the core of the Unix system and e
 # New Features
 
 In this project new features were added to the Minishell project , all functions already implemented in Minishell are functional in 21sh, and i added:
-- separator of a command line ";"
-- redirections and here doc. for ex `ls > test ; cat -e << EOF ; cat < test` 
-- Multi-pipe execution for ex : `ls | cat | grep .c`
+- separators of a command line ";" for ex `ls ; pwd ; echo hello world`
+- redirections of file descriptors and here doc for ex `ls > test ; cat -e << EOF ; cat < test` 
+- Multi-pipe execution for ex  `ls | cat | grep .c`
 - boolean operators between commands "&&" "||"
 - colored prompt like ZSH 
 
