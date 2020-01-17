@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <chadijamal@gmail.com>              +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/29 14:32:29 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/01/14 17:16:04 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/01/17 21:12:30 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <signal.h>
 #include <dirent.h>
 #include <fcntl.h>
+#include <readline/readline.h>
 #include "libft/includes/libft.h"
 
 #define NO_BUILTIN -2
@@ -28,8 +29,8 @@
 #define PID "12452"
 #define PRINCIPALE_ENV_VAR "HOME", "PWD", "OLDPWD", "PATH"
 #define SYMBOL "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
-
-#define PRINT_ERROR(s1, s2) ft_printf("%wminishell: %s: %s\n", 2, s1, s2)
+#define FLAGS  "S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR"
+#define PRINT_ERROR(s1, s2) ft_printf("%w21sh: %s: %s\n", 2, s1, s2)
 
 #define FILE_NOTFOUND "no such file or directory"
 #define NOT_DIR "Not a directory."
@@ -84,7 +85,6 @@ typedef struct s_cmd_holder
 	t_redirs **tab_redir;
 	t_list *env;
 	t_list *logic;
-	int size_cmd;
 	int size_sep;
 	int fd_backup[3];
 } t_cmd_holder;
@@ -128,6 +128,7 @@ int ft_mainexec(t_cmd_holder *hold, t_env_var *var);
 /* redirections */
 t_redirs **ft_alloc_tabredirs(t_list **lstcmd);
 int ft_exec_redirections(t_redirs *tabredir);
+t_redirs	*ft_create_redir(t_list *occur, char *idx_redir);
 
 /* free */
 void ft_free(t_cmd_holder *hold);

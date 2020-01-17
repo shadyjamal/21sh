@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void ft_closefd(int fdcount, int *fd)
+void	ft_closefd(int fdcount, int *fd)
 {
 	int i;
 
@@ -12,7 +12,7 @@ void ft_closefd(int fdcount, int *fd)
 	}
 }
 
-void ft_pipefd(int *fd, int pipecount)
+void	ft_pipefd(int *fd, int pipecount)
 {
 	int i;
 
@@ -24,7 +24,7 @@ void ft_pipefd(int *fd, int pipecount)
 	}
 }
 
-pid_t fork_process(void)
+pid_t	fork_process(void)
 {
 	pid_t fork_ret;
 

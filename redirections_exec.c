@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int exec_heredoc(char *entry)
+int	exec_heredoc(char *entry)
 {
 	int herefd[2];
 
@@ -10,17 +10,17 @@ int exec_heredoc(char *entry)
 	return (herefd[0]);
 }
 
-int open_fileredir(t_redirs *redir)
+int	open_fileredir(t_redirs *redir)
 {
 	if (redir->typeredir == REDIR_OUT)
-		return (open(redir->word, O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR));
+		return (open(redir->word, O_TRUNC | O_WRONLY | O_CREAT, FLAGS));
 	else if (redir->typeredir == APPEND_OUT)
-		return (open(redir->word, O_WRONLY | O_APPEND | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR));
+		return (open(redir->word, O_APPEND | O_WRONLY | O_CREAT, FLAGS));
 	else if (redir->typeredir == REDIR_IN)
 		return (open(redir->word, O_RDONLY));
 	else if (redir->typeredir == DUPLIC_OUT || redir->typeredir == DUPLIC_IN)
 	{
-		if (ft_strequ(redir->word , "-"))
+		if (ft_strequ(redir->word, "-"))
 			return (close(redir->n));
 		else
 			return ((int)ft_atoi(redir->word));
@@ -29,7 +29,7 @@ int open_fileredir(t_redirs *redir)
 		return (exec_heredoc(redir->word));
 }
 
-int file_access(char *cmd)
+int	file_access(char *cmd)
 {
 	if (cmd && !ft_is_dir(cmd) && !access(cmd, F_OK))
 	{
@@ -41,7 +41,7 @@ int file_access(char *cmd)
 	return (0);
 }
 
-int ft_exec_redirections(t_redirs *redir)
+int	ft_exec_redirections(t_redirs *redir)
 {
 	int file_fd;
 	int ret;
@@ -58,7 +58,8 @@ int ft_exec_redirections(t_redirs *redir)
 				PRINT_ERROR(redir->word, PERM_DENYD);
 			return (1);
 		}
-		if (!(((redir->typeredir == DUPLIC_OUT || redir->typeredir == DUPLIC_IN)) && ft_strequ(redir->word , "-")))
+		if (!(((redir->typeredir == DUPLIC_OUT
+		|| redir->typeredir == DUPLIC_IN)) && ft_strequ(redir->word, "-")))
 		{
 			dup2(file_fd, redir->n);
 			if (file_fd != redir->n)

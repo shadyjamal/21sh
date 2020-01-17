@@ -1,28 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <chadijamal@gmail.com>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/23 00:14:15 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/01/14 17:31:30 by cjamal           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
-int ft_tabsize(char **tab)
-{
-	int size;
-
-	size = 0;
-	while (tab[size])
-		size++;
-	return (size);
-}
-
-void kill_procces(int signal)
+void	kill_procces(int signal)
 {
 	(void)signal;
 	if (g_child_prc_pid == 0)
@@ -32,7 +10,7 @@ void kill_procces(int signal)
 	}
 }
 
-void env_var_protection(t_env_var *var, t_list **env)
+void	env_var_protection(t_env_var *var, t_list **env)
 {
 	if (!var->home || !var->path || !var->pwd || !var->oldpwd)
 	{
@@ -41,7 +19,7 @@ void env_var_protection(t_env_var *var, t_list **env)
 	}
 }
 
-void init(char *environ[], t_list **env, t_env_var *var)
+void	init(char *environ[], t_list **env, t_env_var *var)
 {
 	t_list **ptr;
 
@@ -69,26 +47,25 @@ void init(char *environ[], t_list **env, t_env_var *var)
 	env_var_protection(var, env);
 }
 
-int main(int ac, char *av[], char *environ[])
+int		main(int ac, char *av[], char *environ[])
 {
-	char *buffer;
-	t_list *lstcmd;
-	t_env_var var;
-	t_cmd_holder *hold;
+	char			*buffer;
+	t_list			*lstcmd;
+	t_env_var		var;
+	t_cmd_holder	*hold;
 
 	(void)av[ac * 0];
 	buffer = NULL;
-	hold = (t_cmd_holder *)malloc(sizeof(t_cmd_holder));
+	hold = (t_cmd_holder *)ft_memalloc(sizeof(t_cmd_holder));
 	init(environ, &hold->env, &var);
 	while (1)
 	{
-		ft_display_prompt(var.pwd->content, var.error);
-		if (get_next_line(0, &buffer) > 0)
+		//ft_display_prompt(var.pwd->content, var.error);
+		if ((buffer = readline("$> ")))
 		{
 			lstcmd = ft_parsecmd(buffer, &hold->env, &var);
-			hold->tab_redir = ft_alloc_tabredirs(&lstcmd); /* store redirections */
-			hold->cmd = list_to_tab(lstcmd, 0); /* */
-			hold->size_cmd = ft_tabsize(hold->cmd);
+			hold->tab_redir = ft_alloc_tabredirs(&lstcmd);
+			hold->cmd = list_to_tab(lstcmd, 0);
 			ft_strdel(&buffer);
 			ft_lstdel(&lstcmd);
 			var.error = ft_mainexec(hold, &var);

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int cmd_access(char *cmd)
+int		cmd_access(char *cmd)
 {
 	if (cmd && !ft_is_dir(cmd) && !access(cmd, F_OK))
 	{
@@ -12,13 +12,13 @@ int cmd_access(char *cmd)
 	return (1);
 }
 
-char *find(char *cmd, t_env_var *var)
+char	*find(char *cmd, t_env_var *var)
 {
-	char *path;
-	int ret;
-	int permdeny;
-	char **paths;
-	int i;
+	char	*path;
+	int		ret;
+	int		permdeny;
+	char	**paths;
+	int		i;
 
 	permdeny = 0;
 	i = 0;
@@ -40,10 +40,10 @@ char *find(char *cmd, t_env_var *var)
 	return (NULL);
 }
 
-char *ft_find_bin(char **cmd, t_env_var *var)
+char	*ft_find_bin(char **cmd, t_env_var *var)
 {
-	char *cmd_path;
-	int ret;
+	char	*cmd_path;
+	int		ret;
 
 	if (ft_strchr(cmd[0], '/'))
 	{
@@ -59,7 +59,7 @@ char *ft_find_bin(char **cmd, t_env_var *var)
 	return (cmd_path);
 }
 
-int ft_exec_builtin(t_cmd_holder *hold, t_env_var *var, int ind)
+int		ft_exec_builtin(t_cmd_holder *hold, t_env_var *var, int ind)
 {
 	if (!hold->tabpipe[ind][0])
 		return (-1);
@@ -78,12 +78,12 @@ int ft_exec_builtin(t_cmd_holder *hold, t_env_var *var, int ind)
 	return (NO_BUILTIN);
 }
 
-int ft_exec_bin(char **cmd, t_env_var *var, t_list *env, _Bool fork)
+int		ft_exec_bin(char **cmd, t_env_var *var, t_list *env, _Bool fork)
 {
-	char *cmdpath;
-	pid_t process;
-	char **tab_env;
-	int ret;
+	char	*cmdpath;
+	pid_t	process;
+	char	**tab_env;
+	int		ret;
 
 	ret = -1;
 	process = -1;
