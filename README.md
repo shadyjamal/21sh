@@ -3,6 +3,7 @@
 
 Thanks to the Minishell project, we discovered a part of what is behind the scene of a shell, such as the one we use everyday.
 And more specifically the process’ synchronisation creation with functions like fork and wait.
+
 The 21sh project will make us go further by adding, amoungst other things, interprocess communication using pipes.
 We’ll discover termcaps. This library will allow us to add to your shell a line edition feature. We’ll then be able to
 edit a typo made on our command without having to retype it completely as well as
