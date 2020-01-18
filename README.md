@@ -18,7 +18,7 @@ In this project new features were added to the Minishell project , all functions
 - boolean operators between commands "&&" "||"
 - colored prompt like ZSH
 
-More details in the task file [21sh]()
+More details in the task file [21sh](https://github.com/shadyjamal/21sh/blob/master/21sh.en.pdf)
 
 # How to use
 
