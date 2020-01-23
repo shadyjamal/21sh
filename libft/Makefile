@@ -6,7 +6,7 @@
 #    By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/19 22:21:22 by aait-ihi          #+#    #+#              #
-#    Updated: 2019/11/29 16:16:04 by aait-ihi         ###   ########.fr        #
+#    Updated: 2020/01/04 22:52:34 by aait-ihi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,6 @@ STRING_SRC = 	ft_atoi.c\
 				ft_putnbr_fd.c\
 				ft_putstr.c\
 				ft_putstr_fd.c\
-				ft_realloc.c\
 				ft_skipchr.c\
 				ft_skipnchr.c\
 				ft_strcat.c\
@@ -101,17 +100,21 @@ LIST_SRC =		ft_lstadd.c\
 				ft_lstpushback.c\
 				ft_lstfind.c\
 				ft_lstdup.c\
-				ft_lstsize.c
+				ft_lstsize.c\
+				ft_lstenqueue.c\
+				ft_lstdequeue.c
 
 MEMORY_SRC =	ft_bzero.c\
 				ft_memalloc.c\
 				ft_memccpy.c\
+				ft_realloc.c\
 				ft_memchr.c\
 				ft_memcmp.c\
 				ft_memcpy.c\
 				ft_memdel.c\
 				ft_memmove.c\
-				ft_memset.c
+				ft_memset.c\
+				ft_malloc2d.c
 
 NUMBER_SRC =	buble_sort.c\
 				ft_find_int.c\

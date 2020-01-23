@@ -1,14 +1,5 @@
+
 #include "minishell.h"
-
-int		ft_tabsize(char **tab)
-{
-	int size;
-
-	size = 0;
-	while (tab[size])
-		size++;
-	return (size);
-}
 
 void	ft_free_lstredir(t_redirs **alst)
 {
@@ -55,10 +46,7 @@ void	ft_free_cmd(char **tab, int size)
 
 void	ft_free(t_cmd_holder *hold)
 {
-	int size_cmd;
-
-	size_cmd = ft_tabsize(hold->cmd);
 	ft_free_tabredir(hold->tab_redir);
-	ft_free_cmd(hold->cmd, size_cmd);
+	ft_free_cmd(hold->tabcmd, hold->size_cmd);
 	free(hold->tabsep);
 }

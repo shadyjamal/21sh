@@ -1,3 +1,4 @@
+
 #include "minishell.h"
 
 void	save_stdin_stdout(int *std)
@@ -17,16 +18,29 @@ void	restore_stdin_stdout(int *std)
 	close(std[2]);
 }
 
+void	ft_translate_cmd(char **cmd)
+{
+	int i;
+
+	i = -1;
+	while(cmd[++i])
+		ft_translate(cmd[i], "\1\2\5\6\7\x08\x09", "$~&;<>|");
+}
+
 int		exec_builtin_bin(t_cmd_holder *hold, t_env_var *var, _Bool fork, int i)
 {
 	int ret;
 
 	ret = 0;
-	if (hold->tabpipe + i)
+	if (hold->tabpipe)
 	{
-		ret = ft_exec_builtin(hold, var, i);
-		if (ret == NO_BUILTIN)
-			ret = ft_exec_bin(hold->tabpipe[i], var, hold->env, fork);
+		if (hold->tabpipe + i)
+		{
+			ft_translate_cmd(hold->tabpipe[i]);
+			ret = ft_exec_builtin(hold, var, i);
+			if (ret == NO_BUILTIN)
+				ret = ft_exec_bin(hold->tabpipe[i], var, hold->env, fork);
+		}
 	}
 	return (ret);
 }

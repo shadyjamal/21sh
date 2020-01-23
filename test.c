@@ -1,20 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_skipchr.c                                       :+:      :+:    :+:   */
+/*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/28 19:37:17 by aait-ihi          #+#    #+#             */
-/*   Updated: 2019/12/24 01:30:11 by aait-ihi         ###   ########.fr       */
+/*   Created: 2020/01/20 07:34:55 by aait-ihi          #+#    #+#             */
+/*   Updated: 2020/01/20 07:49:20 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 
-char	*ft_skipchr(const char *s, char c)
+#include <signal.h>
+#include <unistd.h>
+#include <stdio.h>
+
+void empty(int sig)
 {
-	while (*s && (char)*s == c)
-		s++;
-	return (char *)s;
+    (void)sig;
+    write(0, "ko\n",3);
+}
+
+int main()
+{
+    char str[100] = {0};
+    signal(2, empty);
+    read(0,str,99);
+    printf("%s\n",str);
+    write(1,"ok\n",3);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strsplit.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 18:03:34 by aait-ihi          #+#    #+#             */
-/*   Updated: 2019/11/29 14:25:07 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/01/18 04:21:02 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ char	**ft_strsplit(char const *s, char *cmp)
 		return (0);
 	while (size--)
 	{
-		s = ft_skip_chars(s, cmp);
-		tab2d[i + 1] = (char *)ft_skip_unitl_char(s, cmp);
+		s = ft_skip_chars(s, cmp, NULL);
+		tab2d[i + 1] = (char *)ft_skip_unitl_char(s, cmp, NULL);
 		if (!(tab2d[i] = ft_strsub(s, 0, tab2d[i + 1] - s)))
 		{
 			ft_free_2d_tab(tab2d);

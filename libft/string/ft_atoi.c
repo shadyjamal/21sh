@@ -6,7 +6,7 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 11:53:01 by aait-ihi          #+#    #+#             */
-/*   Updated: 2019/07/31 16:16:25 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2019/12/24 01:29:19 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ long long	ft_atoi(const char *s)
 	int			m;
 	int			i;
 
+	if (!s)
+		return (0);
 	n = 0;
 	i = 0;
 	m = 1;

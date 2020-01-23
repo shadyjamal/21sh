@@ -14,6 +14,7 @@ t_list	*tab_to_list(char **env)
 		len = ft_strlen(env[i]);
 		ft_strreplace(env[i], '=', 0);
 		ft_lstpushback(&head, env[i], len + 1);
+		ft_strreplace(env[i], '\0', '=');
 		i++;
 	}
 	return (head);
@@ -73,7 +74,7 @@ void	ft_display_prompt(char *ptr, int error)
 
 	if (!ptr)
 	{
-		ft_printf("%s➜\e[0m  🤔 🤔  ", "\e[91m");
+		ft_strcpy(prompt, "\e[91m➜\e[0m  🤔 🤔  ");
 		return ;
 	}
 	error ? ft_strcpy(color, "\e[91m") : ft_strcpy(color, "\e[92m");
@@ -82,5 +83,8 @@ void	ft_display_prompt(char *ptr, int error)
 		path += 1;
 	else
 		path = ptr + 4;
-	ft_printf("%s➜\e[0m  \e[1m\e[96m%s\e[0m ", color, path);
+	ft_strcpy(prompt, color);
+	ft_strcat(prompt, "➜\e[0m  \e[1m\e[96m");
+	ft_strcat(prompt, path);
+	ft_strcat(prompt, "\e[0m ");
 }

@@ -1,13 +1,22 @@
+
 #include "minishell.h"
+#include <readline/readline.h>
+
+int		ft_tabsize(char **tab)
+{
+	int size;
+
+	size = 0;
+	while (tab[size])
+		size++;
+	return (size);
+}
 
 void	kill_procces(int signal)
 {
 	(void)signal;
-	if (g_child_prc_pid == 0)
-	{
-		ft_putstr("\n");
-		ft_display_prompt((*g_pwd)->content, *g_prompt_error);
-	}
+	ft_putstr_fd("\n",0);
+	g_read_interrput = 1;
 }
 
 void	env_var_protection(t_env_var *var, t_list **env)
@@ -49,29 +58,35 @@ void	init(char *environ[], t_list **env, t_env_var *var)
 
 int		main(int ac, char *av[], char *environ[])
 {
-	char			*buffer;
 	t_list			*lstcmd;
 	t_env_var		var;
 	t_cmd_holder	*hold;
 
 	(void)av[ac * 0];
-	buffer = NULL;
 	hold = (t_cmd_holder *)ft_memalloc(sizeof(t_cmd_holder));
+	ft_bzero(prompt, 260);
 	init(environ, &hold->env, &var);
 	while (1)
 	{
-		//ft_display_prompt(var.pwd->content, var.error);
-		if ((buffer = readline("$> ")))
+		g_read_interrput = 0;
+		ft_display_prompt(var.pwd->content, var.error);
+		if ((hold->buff = ft_readline(prompt)))
 		{
-			lstcmd = ft_parsecmd(buffer, &hold->env, &var);
+			lstcmd = ft_parsecmd(hold, &hold->env, &var);
 			hold->tab_redir = ft_alloc_tabredirs(&lstcmd);
-			hold->cmd = list_to_tab(lstcmd, 0);
-			ft_strdel(&buffer);
+			hold->tabcmd = list_to_tab(lstcmd, 0);
+			hold->size_cmd = ft_tabsize(hold->tabcmd);
+			ft_strdel(&hold->buff);
 			ft_lstdel(&lstcmd);
 			var.error = ft_mainexec(hold, &var);
 			ft_free(hold);
 		}
-		ft_strdel(&buffer);
+		// else if (*hold->buff == '\4')
+		// {
+		// 	ft_strdel(&hold->buff);
+		// 	exit(0);
+		// }
+		ft_strdel(&hold->buff);
 		g_child_prc_pid = 0;
 	}
 	return (0);

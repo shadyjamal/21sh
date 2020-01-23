@@ -1,20 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_skipchr.c                                       :+:      :+:    :+:   */
+/*   ft_malloc2d.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/28 19:37:17 by aait-ihi          #+#    #+#             */
-/*   Updated: 2019/12/24 01:30:11 by aait-ihi         ###   ########.fr       */
+/*   Created: 2019/12/21 21:13:49 by aait-ihi          #+#    #+#             */
+/*   Updated: 2019/12/24 01:28:01 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_skipchr(const char *s, char c)
+void	**ft_malloc2d(int rows, int size, void *(*alloc)(size_t))
 {
-	while (*s && (char)*s == c)
-		s++;
-	return (char *)s;
+	void	**ret;
+	int		i;
+
+	i = 0;
+	if (!rows || !size || !(ret = alloc(sizeof(void *) * rows)))
+		return (NULL);
+	while (i < rows)
+	{
+		if (!(ret[i] = alloc(size)))
+		{
+			ft_free_2d_tab((char **)ret);
+			return (NULL);
+		}
+		i++;
+	}
+	return (ret);
 }

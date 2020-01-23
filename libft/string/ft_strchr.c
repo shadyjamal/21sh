@@ -6,7 +6,7 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 16:05:55 by aait-ihi          #+#    #+#             */
-/*   Updated: 2019/06/19 22:18:26 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2019/12/28 22:20:54 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 char	*ft_strchr(const char *str, int c)
 {
+	if(!str)
+		return(0);
 	while (*str && *str != c)
 		str++;
 	return (*str || c == '\0' ? (char *)str : 0);

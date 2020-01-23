@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/29 16:20:25 by aait-ihi          #+#    #+#             */
-/*   Updated: 2019/11/29 16:20:27 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/01/14 09:05:53 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,5 @@
 void	ft_putstr_fd(char const *s, int fd)
 {
 	if (s)
-		write(fd, s, strlen(s));
+		write(fd, s, ft_strlen(s));
 }

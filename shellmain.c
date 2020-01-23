@@ -1,3 +1,4 @@
+
 #include "minishell.h"
 
 int	ft_exec_cmd(t_cmd_holder *hold, char **cmd, t_env_var *var, int pipecount)
@@ -63,8 +64,8 @@ int	ft_mainexec(t_cmd_holder *hold, t_env_var *var)
 	ret = 1;
 	tmp = hold->tab_redir;
 	hold->size_sep = 0;
-	sepcount = ft_ltrcount(hold->cmd, ";");
-	hold->tabsep = parsesep(hold->cmd, sepcount, ";", &hold->size_sep);
+	sepcount = ft_ltrcount(hold->tabcmd, ";");
+	hold->tabsep = parsesep(hold->tabcmd, sepcount, ";", &hold->size_sep);
 	while (++i < hold->size_sep)
 	{
 		ret = ft_handle_or_and(hold, var, i);

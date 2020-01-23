@@ -1,20 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_skipchr.c                                       :+:      :+:    :+:   */
+/*   ft_lstdequeue.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/28 19:37:17 by aait-ihi          #+#    #+#             */
-/*   Updated: 2019/12/24 01:30:11 by aait-ihi         ###   ########.fr       */
+/*   Created: 2019/12/19 00:49:40 by aait-ihi          #+#    #+#             */
+/*   Updated: 2019/12/24 01:25:08 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_skipchr(const char *s, char c)
+void	ft_lstdequeue(t_list **list, void (*del)(void **))
 {
-	while (*s && (char)*s == c)
-		s++;
-	return (char *)s;
+	t_list	*tmp;
+
+	if (list && *list)
+	{
+		tmp = (*list)->next;
+		if (tmp)
+			tmp->last = (*list)->last;
+		del((void **)&(*list)->content);
+		ft_memdel((void **)list);
+		*list = tmp;
+	}
 }

@@ -6,15 +6,35 @@
 /*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 21:19:58 by aait-ihi          #+#    #+#             */
-/*   Updated: 2019/11/25 04:21:19 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/01/18 16:07:20 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-const char	*ft_skip_unitl_char(const char *str, const char *compare)
+static int empty(int n)
 {
-	while (str && *str && !ft_isinstr(*str, compare))
+	(void)n;
+	return(0);
+}
+
+char	*ft_skip_unitl_char(const char *str, const char *compare, int (*f)(int))
+{
+	if(!f)
+		f = empty;
+	while (str && *str && !ft_isinstr(*str, compare) && !f(*str))
 		str++;
-	return (str);
+	return ((char *)str);
+}
+
+char		*ft_rskip_unitl_char(const char *str, const char *compare,
+														int (*f)(int), int i)
+{
+	if(!f)
+		f = empty;
+	while (str && i >= 0 && !ft_isinstr(str[i], compare) && !f(str[i]))
+		i--;
+	if (i == -1)
+		i = 0;
+	return ((char *)(str + i));
 }

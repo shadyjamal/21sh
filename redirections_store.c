@@ -36,7 +36,7 @@ void		redirection_found(t_list ***lstcmd, t_redirs **tab, int ind)
 	if (lstcmd && *lstcmd)
 	{
 		newlst = *lstcmd;
-		tmp = ft_skip_unitl_char((*newlst)->content, "<>");
+		tmp = ft_skip_unitl_char((*newlst)->content, "<>", NULL);
 		if (*tmp)
 		{
 			ft_lstredirspback(&tab[ind], ft_create_redir(*newlst, (char *)tmp));

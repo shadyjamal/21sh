@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/30 15:19:49 by aait-ihi          #+#    #+#             */
-/*   Updated: 2019/11/29 16:15:54 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/01/18 04:33:37 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,24 @@
 # include "printf.h"
 # include "get_next_line.h"
 # include "bigint.h"
-# define ABS(v) (v < 0 ? (v * -1) : v)
+# define ABS(v) (v < 0 ? -(v) : (v))
 # define SIGN(v) (v >= 0 ? 1 : -1)
+# define BETWEEN(v, v1, v2) ((v) >= (v1) && (v) <= (v2))
 
 typedef struct	s_list
 {
 	void			*content;
 	size_t			content_size;
 	struct s_list	*next;
+	struct s_list	*last;
 }				t_list;
 
 int				ft_isalpha(int c);
 int				ft_isalnum(int c);
+int				ft_isnalnum(int c);
 int				ft_isascii(int c);
 int				ft_isprint(int c);
+int				ft_isunprint(int c);
 int				ft_iswhitespace(char c);
 int				ft_toupper(int c);
 int				ft_tolower(int c);
@@ -45,9 +49,10 @@ char			*ft_itoa_base(long long n, int base);
 int				ft_isdigit(int c);
 char			*ft_uitoa(unsigned long long n);
 char			*ft_uitoa_base(unsigned long long n, int base);
-int				ft_int_min(int *tab, size_t size);
+int				ft_int_min(int *table, size_t size);
 int				ft_max(int a, int b);
-int				ft_int_max(int *tab, size_t size);
+int				ft_min(int a, int b);
+int				ft_int_max(int *table, size_t size);
 long long		ft_pow(long long n, int p);
 int				ft_sqrt(int s);
 bool			ft_swap(int *a, int *b);
@@ -66,6 +71,8 @@ void			*ft_memchr(const void *s, int c, size_t n);
 int				ft_memcmp(const void *s1, const void *s2, size_t n);
 void			*ft_memalloc(size_t size);
 void			ft_memdel(void **ap);
+void			**ft_malloc2d(int rows, int size, void*(*alloc)(size_t));
+char			*ft_realloc(void *str, size_t size, size_t new_size);
 
 long long		ft_atoi(const char *s);
 long long		ft_atoi_base(const char *s, const char *s_base, int base);
@@ -105,25 +112,31 @@ char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_strtrim(char const *s);
 char			**ft_strsplit(char const *s, char *cmp);
 char			*ft_strtoupper(char *str);
-char			*ft_realloc(char *str, size_t new_size);
 char			*ft_skipchr(const char *s, char c);
 char			*ft_skipnchr(const char *s, int i);
-char			*ft_skip_chars(const char *str, const char *compare);
-const char		*ft_skip_unitl_char(const char *str, const char *compare);
+char			*ft_skip_chars(const char *str, const char *cmp, int (*f)(int));
+char			*ft_rskip_chars(const char *str, const char *cmp,
+														int (*f)(int), int i);
+char			*ft_skip_unitl_char(const char *str, const char *compare,
+																int (*f)(int));
+char			*ft_rskip_unitl_char(const char *str, const char *compare,
+														int (*f)(int), int i);
 int				ft_strindexof(const char *s, char c);
 char			*ft_strreplace(char *str, char find, char replace);
 int				ft_str_occurence(char *str, char c);
 void			ft_strreplaceall(char *str, char find, char replace);
 int				ft_wordcount(const char *str, char *cmp);
 char			*ft_strnjoin(char	**strings, int n);
-void			ft_translate(char *str, const char *from, const char *to);
-_Bool			ft_str_in_arr(char *str, char **tab);
-void			ft_free_2d_tab(char **tab);
+char			*ft_translate(char *str, const char *from, const char *to);
+_Bool			ft_str_in_arr(char *str, char **table);
+void			ft_free_2d_tab(char **table);
 int				ft_str_match(char *str, int (*fun)(int));
 
 t_list			*ft_lstnew(void const *content, size_t content_size);
 void			ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
 void			ft_lstdel(t_list **alst);
+t_list			*ft_lstenqueue(t_list **list, t_list *new);
+void			ft_lstdequeue(t_list **list, void (*del)(void **));
 void			ft_lstdelfn(void *obj, size_t size);
 void			ft_lstadd(t_list **alst, t_list *new);
 void			ft_lstiter(t_list *lst, void (*f)(t_list *elem));

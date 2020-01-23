@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi_base.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 23:13:08 by aait-ihi          #+#    #+#             */
-/*   Updated: 2019/09/16 19:54:03 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/01/18 04:20:40 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ long long	ft_atoi_base(const char *s, const char *s_base, int base)
 	n = 0;
 	i = 0;
 	m = 1;
-	s = ft_skip_chars((char *)s, " \n\t\r\v");
+	s = ft_skip_chars((char *)s, " \n\t\r\v", NULL);
 	if ((*s == 45 || *s == 43) && ft_isinstr(s[1], s_base))
 		m *= (*s++ == '-' ? -1 : 1);
 	while (ft_isinstr(*s, s_base))

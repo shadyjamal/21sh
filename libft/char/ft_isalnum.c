@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 14:45:05 by aait-ihi          #+#    #+#             */
-/*   Updated: 2019/06/19 22:18:26 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/01/18 04:32:56 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,3 +16,9 @@ int	ft_isalnum(int c)
 {
 	return ((ft_isdigit(c) || ft_isalpha(c)) ? 1 : 0);
 }
+
+int	ft_isnalnum(int c)
+{
+	return (!(ft_isdigit(c) || ft_isalpha(c)));
+}
+

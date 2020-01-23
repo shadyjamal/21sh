@@ -1,3 +1,4 @@
+
 #include "minishell.h"
 
 char		*ft_strjoin_free(char const *s1, char const *s2, int i)
@@ -25,10 +26,9 @@ char		*prompt_heredoc(char *eof)
 	entry = ft_strnew(0);
 	while (42)
 	{
-		ft_putchar('>');
-		if (get_next_line(0, &cmd) > 0)
+		if ((cmd = ft_readline("> ")))
 		{
-			if (ft_strcmp(cmd, eof) == 0)
+			if ((!ft_strcmp(cmd, eof)) || (*cmd == '\4'))
 			{
 				free(cmd);
 				break ;
