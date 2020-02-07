@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+         #
+#    By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/29 15:53:22 by aait-ihi          #+#    #+#              #
-#    Updated: 2020/01/20 14:33:17 by aait-ihi         ###   ########.fr        #
+#    Updated: 2020/01/25 00:17:54 by cjamal           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,27 +16,24 @@ LIB_FT = libft/libft.a
 
 LIB_READLINE = readline/readline.a
 
-FLAGS = -Wall -Werror -Wextra -g
-SRC = cd.c debug.c echo.c env.c exec.c exec_pipe.c free.c main.c parse_arg.c parse_cmd_tab.c parsing.c redirections_create.c redirections_exec.c redirections_store.c shellmain.c utilsfd.c utilslst.c
+FLAGS = -Wall -Werror -Wextra
+
+SRC =	cd.c echo.c env.c exec.c exec_pipe.c free.c main.c parse_cmd_tab.c\
+		redirections_create.c redirections_exec.c redirections_store.c shellmain.c\
+		utilsfd.c utilslst.c parsing.c parse_arg.c parse_helper.c
 
 CC = gcc
 
 OBJ = $(SRC:.c=.o)
 
-all: $(NAME)
+all: makelib $(NAME)
 
-$(LIB_READLINE) : lib_readline $(LIB_FT)
+makelib :  
+	@make -C readline
+	@make -C libft
 
-lib_readline:
-	make -C readline
-
-$(LIB_FT) : lib
-
-lib:
-	make -C libft
-
-$(NAME): $(OBJ) $(LIB_FT) $(LIB_READLINE) $(LIB_FT) $(LIB_READLINE)
-	$(CC) $(FLAGS) $(OBJ) -ltermcap  -lreadline $(LIB_FT) $(LIB_READLINE)  -o $(NAME)
+$(NAME): $(OBJ) $(LIB_FT) $(LIB_READLINE)
+	$(CC) $(FLAGS) $(OBJ) -ltermcap $(LIB_FT) $(LIB_READLINE)  -o $(NAME)
 
 %.o : %.c minishell.h
 	$(CC) $(FLAGS) -c $< -o $@

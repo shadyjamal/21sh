@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirections_create.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/01/24 00:57:59 by cjamal            #+#    #+#             */
+/*   Updated: 2020/01/24 17:18:34 by aait-ihi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -18,7 +29,7 @@ char		*ft_strjoin_free(char const *s1, char const *s2, int i)
 	return (str);
 }
 
-char		*prompt_heredoc(char *eof)
+char		*g_prompt_heredoc(char *eof)
 {
 	char	*cmd;
 	char	*entry;
@@ -60,7 +71,7 @@ void		which_redirection_in(t_redirs *new, char *idx_redir)
 	else if (ft_strequ(idx_redir + 1, "<"))
 	{
 		new->typeredir = HEREDOC;
-		tmp = prompt_heredoc(new->word);
+		tmp = g_prompt_heredoc(new->word);
 		ft_strdel(&new->word);
 		new->word = tmp;
 	}

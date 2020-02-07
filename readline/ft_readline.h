@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 12:55:33 by yabakhar          #+#    #+#             */
-/*   Updated: 2020/01/23 00:23:46 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/01/24 17:18:34 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,107 +44,106 @@
 # define BUTTON_CTL_D 4
 # define BUTTON_CTL_L 12
 
-int g_read_interrput;
-
 typedef struct	s_point
 {
 	int x;
 	int y;
 }				t_point;
 
-typedef struct s_cmd_history
+typedef struct	s_cmd_history
 {
-	char *tmp_line;
-	char *line;
-	int len;
-	int tmp_len;
-	struct s_cmd_history *next;
-	struct s_cmd_history *prev;
-} t_cmd_history;
+	char					*tmp_line;
+	char					*line;
+	struct s_cmd_history	*next;
+	struct s_cmd_history	*prev;
+	int						len;
+	int						tmp_len;
+}				t_cmd_history;
 
-typedef struct s_line
+typedef struct	s_line
 {
-	int *details;
-	int index;
-	int linecount;
-}t_line;
+	int			*details;
+	int			index;
+	int			linecount;
+}				t_line;
 
-typedef struct s_readline
+typedef struct	s_readline
 {
-	const char *prompt;
-	char *to_past;
-	t_cmd_history *cmd;
-	struct termios config;
-	t_line line_props;
-	t_point o_cursor;
-	t_point ov_cursor;
-	
-	int cursor;
-	int line_index;
-	int col;
-	int row;
-} t_readline;
-
-t_readline *g_readline;
+	const char		*g_prompt;
+	char			*to_past;
+	t_cmd_history	*cmd;
+	struct termios	config;
+	t_line			line_props;
+	t_point			o_cursor;
+	t_point			ov_cursor;
+	int				cursor;
+	int				line_index;
+	int				col;
+	int				row;
+}				t_readline;
 
 /*
 **	Cursor Events & Operations
 */
-void cur_up(t_readline *readline);
-void cur_down(t_readline *readline);
-void cur_right(t_readline *readline);
-void cur_left(t_readline *readline);
-void cur_move_by_word(t_readline *readline, int button);
-void to_start_or_end(t_readline *readline, int button);
+void			cur_up(t_readline *readline);
+void			cur_down(t_readline *readline);
+void			cur_right(t_readline *readline);
+void			cur_left(t_readline *readline);
+void			cur_move_by_word(t_readline *readline, int button);
+void			to_start_or_end(t_readline *readline, int button);
 
 /*
 **	Cursor Helper Functions
 */
-void set_virtual_origin(t_readline *readline);
-void get_cursor_position(t_readline *readline);
-void set_cursor_from_index(t_readline *readline);
-void set_idnex_from_cursor(t_readline *readline);
-void cur_goto(t_readline *readline, int cursor);
-int get_virtua_line_count(t_readline *readline);
-void update_o_cursor(t_readline *readline);
+void			set_virtual_origin(t_readline *readline);
+void			get_cursor_position(t_readline *readline);
+void			set_cursor_from_index(t_readline *readline);
+void			set_idnex_from_cursor(t_readline *readline);
+void			cur_goto(t_readline *readline, int cursor);
+int				get_virtua_line_count(t_readline *readline);
+void			update_o_cursor(t_readline *readline);
 
 /*
 **	Events
 */
-void history_previous(t_readline *readline);
-void history_next(t_readline *readline);
+void			history_previous(t_readline *readline);
+void			history_next(t_readline *readline);
 
 /*
 **	Helpers
 */
-int manage_ctlr_d(t_readline *readline);
-char *manage_ctlr_c(t_readline *readline);
-void clear_buffer(t_readline *readline);
-void configure_terminal(t_readline *readline);
-void unconfigure_terminal(t_readline *readline);
-char		*remove_unprintable_chars(char *str);
-int output(int str);
+int				manage_ctlr_d(t_readline *readline);
+char			*manage_ctlr_c(t_readline *readline);
+void			clear_buffer(t_readline *readline);
+void			configure_terminal(t_readline *readline);
+void			unconfigure_terminal(t_readline *readline);
+char			*remove_unprintable_chars(char *str);
+int				output(int str);
 
 /*
 **	Line Operations
 */
-void	insert_in_line(t_readline *readline, char *str);
-void	remove_from_line(t_readline *readline, int start, int end);
-void	rewrite_line(t_readline *readline);
-int		*get_line_details(t_readline *readline);
+void			insert_in_line(t_readline *readline, char *str);
+void			remove_from_line(t_readline *readline, int start, int end);
+void			rewrite_line(t_readline *readline);
+int				*get_line_details(t_readline *readline);
 
 /*
 **	CMD History
 */
-void clean_hsitory(void);
-void add_to_history(const char *str, int len);
-void free_history(void);
-void set_cur_history(t_readline *readline, t_cmd_history *cur);
-t_cmd_history *get_cmd_history_head(void);
+void			clean_hsitory(void);
+void			add_to_history(const char *str, int len);
+void			free_history(void);
+void			set_cur_history(t_readline *readline, t_cmd_history *cur);
+t_cmd_history	*get_cmd_history_head(void);
 
-void set_signal(void);
-void signal_resize(int sig);
-void sig_dispatch(int a);
-void selection(t_readline *readline);
-char	*ft_readline(const char *prompt);
+void			set_signal(void);
+void			signal_resize(int sig);
+void			sig_dispatch(int a);
+void			selection(t_readline *readline);
+char			*ft_readline(const char *g_prompt);
+
+int				g_read_interrput;
+t_readline		*g_readline;
+
 #endif

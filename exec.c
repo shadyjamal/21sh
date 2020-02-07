@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/01/24 00:59:46 by cjamal            #+#    #+#             */
+/*   Updated: 2020/01/24 01:52:42 by cjamal           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -62,7 +73,7 @@ char	*ft_find_bin(char **cmd, t_env_var *var)
 
 int		ft_exec_builtin(t_cmd_holder *hold, t_env_var *var, int ind)
 {
-	if (!hold->tabpipe[ind][0])
+	if (hold->tabpipe && !hold->tabpipe[ind][0])
 		return (-1);
 	else if (ft_strequ(hold->tabpipe[ind][0], "exit"))
 		exit(0);

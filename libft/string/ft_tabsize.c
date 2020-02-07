@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   ft_tabsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/20 07:34:55 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/01/20 07:49:20 by aait-ihi         ###   ########.fr       */
+/*   Created: 2020/01/24 22:02:30 by cjamal            #+#    #+#             */
+/*   Updated: 2020/01/24 22:02:32 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 
-#include <signal.h>
-#include <unistd.h>
-#include <stdio.h>
-
-void empty(int sig)
+int		ft_tabsize(char **tab)
 {
-    (void)sig;
-    write(0, "ko\n",3);
-}
+	int size;
 
-int main()
-{
-    char str[100] = {0};
-    signal(2, empty);
-    read(0,str,99);
-    printf("%s\n",str);
-    write(1,"ok\n",3);
+	size = 0;
+	if (tab)
+	{
+		while (tab[size])
+			size++;
+	}
+	return (size);
 }

@@ -1,21 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/01/24 00:59:04 by cjamal            #+#    #+#             */
+/*   Updated: 2020/01/24 21:32:23 by cjamal           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
-#include <readline/readline.h>
-
-int		ft_tabsize(char **tab)
-{
-	int size;
-
-	size = 0;
-	while (tab[size])
-		size++;
-	return (size);
-}
 
 void	kill_procces(int signal)
 {
 	(void)signal;
-	ft_putstr_fd("\n",0);
+	ft_putstr_fd("\n", 0);
 	g_read_interrput = 1;
 }
 
@@ -56,6 +56,16 @@ void	init(char *environ[], t_list **env, t_env_var *var)
 	env_var_protection(var, env);
 }
 
+void	init_tab_redirs_cmd(t_cmd_holder *hold, t_list **lstcmd)
+{
+	if (lstcmd)
+	{
+		hold->tab_redir = ft_alloc_tabredirs(lstcmd);
+		hold->tabcmd = list_to_tab(*lstcmd, 0);
+		hold->size_cmd = ft_tabsize(hold->tabcmd);
+	}
+}
+
 int		main(int ac, char *av[], char *environ[])
 {
 	t_list			*lstcmd;
@@ -64,30 +74,23 @@ int		main(int ac, char *av[], char *environ[])
 
 	(void)av[ac * 0];
 	hold = (t_cmd_holder *)ft_memalloc(sizeof(t_cmd_holder));
-	ft_bzero(prompt, 260);
+	ft_bzero(g_prompt, 260);
 	init(environ, &hold->env, &var);
 	while (1)
 	{
 		g_read_interrput = 0;
-		ft_display_prompt(var.pwd->content, var.error);
-		if ((hold->buff = ft_readline(prompt)))
+		ft_display_g_prompt(var.pwd->content, var.error);
+		if ((hold->buff = ft_readline(g_prompt)) && *hold->buff != '\4')
 		{
 			lstcmd = ft_parsecmd(hold, &hold->env, &var);
-			hold->tab_redir = ft_alloc_tabredirs(&lstcmd);
-			hold->tabcmd = list_to_tab(lstcmd, 0);
-			hold->size_cmd = ft_tabsize(hold->tabcmd);
-			ft_strdel(&hold->buff);
+			init_tab_redirs_cmd(hold, &lstcmd);
 			ft_lstdel(&lstcmd);
 			var.error = ft_mainexec(hold, &var);
 			ft_free(hold);
 		}
-		// else if (*hold->buff == '\4')
-		// {
-		// 	ft_strdel(&hold->buff);
-		// 	exit(0);
-		// }
+		else if (hold->buff && *hold->buff == '\4')
+			exit(0);
 		ft_strdel(&hold->buff);
-		g_child_prc_pid = 0;
 	}
 	return (0);
 }

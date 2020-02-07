@@ -6,13 +6,13 @@
 #    By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/07 00:56:57 by aait-ihi          #+#    #+#              #
-#    Updated: 2020/01/20 14:33:03 by aait-ihi         ###   ########.fr        #
+#    Updated: 2020/01/25 00:18:26 by cjamal           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = readline.a
 
-CFLAGS = -Wall -Werror -Wextra -g
+CFLAGS = -Wall -Werror -Wextra
 
 CC = gcc
 

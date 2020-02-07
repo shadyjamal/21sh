@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/30 15:19:49 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/01/18 04:33:37 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/01/24 21:44:13 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ char			*ft_skipnchr(const char *s, int i);
 char			*ft_skip_chars(const char *str, const char *cmp, int (*f)(int));
 char			*ft_rskip_chars(const char *str, const char *cmp,
 														int (*f)(int), int i);
+int				ft_tabsize(char **tabs);
 char			*ft_skip_unitl_char(const char *str, const char *compare,
 																int (*f)(int));
 char			*ft_rskip_unitl_char(const char *str, const char *compare,

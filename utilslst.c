@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utilslst.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/01/24 00:49:28 by cjamal            #+#    #+#             */
+/*   Updated: 2020/01/24 17:18:34 by aait-ihi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_list	*tab_to_list(char **env)
@@ -67,14 +79,14 @@ void	ft_lstmodifone(t_list *to_mod, char *value)
 	to_mod->content_size = ft_strlen(value) + 1;
 }
 
-void	ft_display_prompt(char *ptr, int error)
+void	ft_display_g_prompt(char *ptr, int error)
 {
 	char	*path;
 	char	color[6];
 
 	if (!ptr)
 	{
-		ft_strcpy(prompt, "\e[91m➜\e[0m  🤔 🤔  ");
+		ft_strcpy(g_prompt, "\e[91m➜\e[0m  🤔 🤔  ");
 		return ;
 	}
 	error ? ft_strcpy(color, "\e[91m") : ft_strcpy(color, "\e[92m");
@@ -83,8 +95,8 @@ void	ft_display_prompt(char *ptr, int error)
 		path += 1;
 	else
 		path = ptr + 4;
-	ft_strcpy(prompt, color);
-	ft_strcat(prompt, "➜\e[0m  \e[1m\e[96m");
-	ft_strcat(prompt, path);
-	ft_strcat(prompt, "\e[0m ");
+	ft_strcpy(g_prompt, color);
+	ft_strcat(g_prompt, "➜\e[0m  \e[1m\e[96m");
+	ft_strcat(g_prompt, path);
+	ft_strcat(g_prompt, "\e[0m ");
 }

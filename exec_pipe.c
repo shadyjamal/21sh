@@ -1,29 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_pipe.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/01/24 00:59:52 by cjamal            #+#    #+#             */
+/*   Updated: 2020/01/24 01:55:19 by cjamal           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
-
-void	save_stdin_stdout(int *std)
-{
-	std[0] = dup(STDIN_FILENO);
-	std[1] = dup(STDOUT_FILENO);
-	std[2] = dup(STDERR_FILENO);
-}
-
-void	restore_stdin_stdout(int *std)
-{
-	dup2(std[0], STDIN_FILENO);
-	close(std[0]);
-	dup2(std[1], STDOUT_FILENO);
-	close(std[1]);
-	dup2(std[2], STDERR_FILENO);
-	close(std[2]);
-}
 
 void	ft_translate_cmd(char **cmd)
 {
 	int i;
 
 	i = -1;
-	while(cmd[++i])
+	while (cmd[++i])
 		ft_translate(cmd[i], "\1\2\5\6\7\x08\x09", "$~&;<>|");
 }
 
@@ -34,7 +28,7 @@ int		exec_builtin_bin(t_cmd_holder *hold, t_env_var *var, _Bool fork, int i)
 	ret = 0;
 	if (hold->tabpipe)
 	{
-		if (hold->tabpipe + i)
+		if (hold->tabpipe[i])
 		{
 			ft_translate_cmd(hold->tabpipe[i]);
 			ret = ft_exec_builtin(hold, var, i);

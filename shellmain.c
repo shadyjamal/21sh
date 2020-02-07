@@ -1,5 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shellmain.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/01/24 00:50:00 by cjamal            #+#    #+#             */
+/*   Updated: 2020/01/24 21:29:16 by cjamal           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_check_fd(const char *str, int *flag)
+{
+	int i;
+
+	i = 0;
+	while (str[i] && ft_isdigit(str[i]))
+		i++;
+	if (!str[i])
+		return (1);
+	if (str[i] == '-' && !str[i + 1])
+	{
+		*flag = 1;
+		return (1);
+	}
+	return (0);
+}
 
 int	ft_exec_cmd(t_cmd_holder *hold, char **cmd, t_env_var *var, int pipecount)
 {

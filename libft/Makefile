@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+         #
+#    By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/19 22:21:22 by aait-ihi          #+#    #+#              #
-#    Updated: 2020/01/04 22:52:34 by aait-ihi         ###   ########.fr        #
+#    Updated: 2020/01/25 00:18:08 by cjamal           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,8 +71,8 @@ STRING_SRC = 	ft_atoi.c\
 				ft_translate.c\
 				ft_str_in_arr.c\
 				ft_str_match.c\
-				ft_free_2d_tab.c
-
+				ft_free_2d_tab.c\
+				ft_tabsize.c
 
 BIGINT_SRC = 	aritmitic_op.c\
 				conditional_op.c\

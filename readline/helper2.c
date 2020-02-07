@@ -6,7 +6,7 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 09:53:31 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/01/20 12:03:16 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/01/24 17:18:34 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int		manage_ctlr_d(t_readline *readline)
 		free(readline->line_props.details);
 		clean_hsitory();
 		unconfigure_terminal(readline);
+		ft_putstr("\n");
 		return (1);
 	}
 	return (0);
@@ -39,13 +40,21 @@ void	clear_buffer(t_readline *readline)
 {
 	readline->o_cursor.y = 0;
 	set_virtual_origin(readline);
+	tputs(tgoto(tgetstr("cm", 0), 0, readline->o_cursor.y), 0, output);
+	update_o_cursor(readline);
+	tputs(tgetstr("cd", NULL), 0, output);
+	ft_printf("%s%s", readline->g_prompt, readline->cmd->tmp_line);
+	cur_goto(readline, readline->cursor);
 	rewrite_line(readline);
 }
 
 void	configure_terminal(t_readline *readline)
 {
 	if (tcgetattr(0, &readline->config) < 0)
+	{
+		read(1, NULL, 1);
 		ft_die("Can't get terminal config", -10);
+	}
 	readline->config.c_lflag &= ~(ECHO | ICANON);
 	readline->config.c_cc[VMIN] = 0;
 	readline->config.c_cc[VTIME] = 1;

@@ -1,19 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirections_exec.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/01/24 00:50:13 by cjamal            #+#    #+#             */
+/*   Updated: 2020/01/24 23:36:57 by cjamal           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
-
-int ft_str_isdigit(const char *str)
-{
-	int i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (!ft_isdigit(str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
 
 int	exec_heredoc(char *entry)
 {
@@ -25,7 +22,7 @@ int	exec_heredoc(char *entry)
 	return (herefd[0]);
 }
 
-int	open_fileredir(t_redirs *redir)
+int	open_fileredir(t_redirs *redir, int *flag)
 {
 	if (redir->typeredir == REDIR_OUT)
 		return (open(redir->word, O_TRUNC | O_WRONLY | O_CREAT, 0644));
@@ -35,19 +32,19 @@ int	open_fileredir(t_redirs *redir)
 		return (open(redir->word, O_RDONLY));
 	else if (redir->typeredir == DUPLIC_OUT || redir->typeredir == DUPLIC_IN)
 	{
-		if (ft_strequ(redir->word, "-"))
+		if (*redir->word == '-')
 		{
 			close(redir->n);
 			return (CLOSED_FD);
 		}
-		if (ft_str_isdigit(redir->word))
+		if (ft_check_fd(redir->word, flag))
 			return ((int)ft_atoi(redir->word));
 		else if (redir->typeredir == DUPLIC_IN)
 			return (-2);
 		else if (redir->typeredir == DUPLIC_OUT && redir->n != 1)
 			return (-2);
 		else
-			return (open(redir->word, O_TRUNC | O_WRONLY | O_CREAT, 0644));			
+			return (open(redir->word, O_TRUNC | O_WRONLY | O_CREAT, 0644));
 	}
 	else
 		return (exec_heredoc(redir->word));
@@ -65,29 +62,39 @@ int	file_access(char *cmd)
 	return (0);
 }
 
+int	ft_redirections_errors(t_redirs *redir, int file_fd)
+{
+	int ret;
+
+	if (file_fd == -2)
+		return (PRINT_ERROR(redir->word, AMB_REDIR));
+	if (!(ret = file_access(redir->word)) && ft_is_dir(redir->word))
+		return (PRINT_ERROR(redir->word, IS_DIR));
+	else if (ret < 0)
+		return (PRINT_ERROR(redir->word, PERM_DENYD));
+	return (1);
+}
+
 int	ft_exec_redirections(t_redirs *redir)
 {
 	int file_fd;
-	int ret;
+	int	flag;
 
+	flag = 0;
 	while (redir && redir->typeredir != NO_REDIR)
 	{
-		if ((file_fd = open_fileredir(redir)) < 0)
-		{
-			if (file_fd == -2)
-				return (PRINT_ERROR(redir->word, AMB_REDIR));
-			if (!(ret = file_access(redir->word)) && ft_is_dir(redir->word))
-				return (PRINT_ERROR(redir->word, IS_DIR));
-			else if (ret < 0)
-				return (PRINT_ERROR(redir->word, PERM_DENYD));
-		}
-		if (file_fd != CLOSED_FD)
+		if ((file_fd = open_fileredir(redir, &flag)) < 0)
+			return (ft_redirections_errors(redir, file_fd));
+		if (file_fd != CLOSED_FD && EQUAL_TO(redir->n, 0, 1, 2))
 		{
 			if (dup2(file_fd, redir->n) < 0)
 				return (PRINT_ERROR(redir->word, BAD_FD));
-			if (redir->typeredir == DUPLIC_OUT && !ft_str_isdigit(redir->word))
+			if (redir->typeredir == DUPLIC_OUT &&
+				!ft_check_fd(redir->word, &flag))
 				dup2(redir->n, 2);
-			(file_fd != redir->n) ? close(file_fd) : 0;
+			if (file_fd != redir->n &&
+				(!EQUAL_TO(file_fd, 0, 1, 2) || flag == 1))
+				close(file_fd);
 		}
 		redir = redir->next;
 	}

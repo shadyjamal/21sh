@@ -6,7 +6,7 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/07 00:57:15 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/01/20 12:39:51 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/01/24 17:18:34 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,16 @@ static int	key_handel(t_readline *env, int b, int r)
 	return (r);
 }
 
-static void	readline_init(t_readline *readline, const char *prompt)
+static void	readline_init(t_readline *readline, const char *g_prompt)
 {
 	g_readline = readline;
 	ft_bzero(readline, sizeof(t_readline));
-	readline->prompt = prompt;
+	readline->g_prompt = g_prompt;
 	configure_terminal(readline);
 	signal_resize(0);
+	signal(SIGWINCH, signal_resize);
 	get_cursor_position(readline);
-	add_to_history(ft_strdup(""), 0);
+	add_to_history("", 0);
 	readline->cmd = get_cmd_history_head();
 	readline->line_props.linecount = 1;
 	readline->line_props.details = ft_memalloc(sizeof(int));
@@ -58,13 +59,14 @@ static void	readline_init(t_readline *readline, const char *prompt)
 
 static char	*end_readline(t_readline *readline)
 {
-	char	*tmp;
+	char			*tmp;
+	const t_point	cursor = readline->o_cursor;
 
 	tmp = NULL;
-	tputs(tgoto(tgetstr("cm", 0), 0, readline->o_cursor.y), 0, output);
+	tputs(tgoto(tgetstr("cm", 0), cursor.x, cursor.y), 0, output);
 	if (readline->cmd && readline->cmd->tmp_line)
 	{
-		ft_printf("%s%s\n", readline->prompt, readline->cmd->tmp_line);
+		ft_putendl(readline->cmd->tmp_line);
 		tmp = readline->cmd->tmp_line;
 		readline->cmd->tmp_line = NULL;
 	}
@@ -94,15 +96,15 @@ static int	everything_is_ok(t_readline *readline)
 	return (ret);
 }
 
-char		*ft_readline(const char *prompt)
+char		*ft_readline(const char *g_prompt)
 {
 	t_readline	readline;
 	char		buff[2049];
 	int			button;
 
-	prompt = prompt ? prompt : "";
-	ft_printf(prompt);
-	readline_init(&readline, prompt);
+	g_prompt = g_prompt ? g_prompt : "";
+	ft_printf(g_prompt);
+	readline_init(&readline, g_prompt);
 	while (everything_is_ok(&readline) && ft_memset(buff, 0, 2049))
 		if (read(0, buff, 2048) > 0)
 		{
@@ -112,7 +114,7 @@ char		*ft_readline(const char *prompt)
 				if (button == BUTTON_CTL_L)
 					clear_buffer(&readline);
 				else if (button == BUTTON_CTL_D && manage_ctlr_d(&readline))
-					return (ft_strdup(""));
+					return (ft_strdup("\4"));
 				else
 					insert_in_line(&readline, remove_unprintable_chars(buff));
 			}
